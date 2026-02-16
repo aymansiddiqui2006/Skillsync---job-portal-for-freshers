@@ -32,7 +32,7 @@ const userSchema = mongoose.Schema(
         type: String,
       },
     ],
-    company: {
+    companyName: {
       type: String,
     },
     resume: {
