@@ -1,8 +1,21 @@
-import express from "express"
-import asyncHandler from "express-async-handler"
+// const AsyncHandler = (func) => {
+//   async (req, res, next) => {
+//     try {
+//       return await func(req, res, next);
+//     } catch (error) {
+//       next(error);
+//     }
+//   };
+// };
 
-const AsyncHadler=(req,res,next)=>{
-    Promise.resolve((req,res,next)).catch(next());
+
+const AsyncHandler=(func)=>{
+    (req,res,next)=>{
+        Promise.resolve(func(req,res,next))
+        .catch=(err)=>{
+            next(err)
+        }
+    }
 }
 
-export default AsyncHadler;
+export default AsyncHandler;

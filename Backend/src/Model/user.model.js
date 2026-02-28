@@ -22,6 +22,7 @@ const userSchema = mongoose.Schema(
     role: {
       type: String,
       enum: ["fresher", "recruiter"],
+      default:"fresher",
       required: true,
     },
     avatar: {
