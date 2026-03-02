@@ -1,5 +1,6 @@
 import express from 'express'
-import userRouter from './src/routes/userRouter.router.js';
+import userRegisterRouter from './src/routes/userRouter.router.js';
+import UpdateProfileRouter from './src/routes/ProfileUpadate.routes.js'
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
 
@@ -14,7 +15,9 @@ app.use(cookieParser())
 
 
 //"use" is the middleware stating that when this is writtent in the link section move to userRouter
-app.use("/api/v1/user",userRouter);
+app.use("/api/v1/user",userRegisterRouter);
+
+app.use("/api/v1/user/profile/update",UpdateProfileRouter);
 
 
 export  default app

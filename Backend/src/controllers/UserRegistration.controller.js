@@ -59,7 +59,7 @@ const UserRegister = AsyncHandler(async (req, res) => {
     },
   };
 
-  res
+  return res
     .status(200)
     .json(new ApiRes(200, responseData, "User Registered Successfully"));
 });
@@ -94,7 +94,7 @@ const UserLogin = AsyncHandler(async (req, res) => {
     secure: false,
   };
 
-  res
+  return res
     .status(200)
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
@@ -129,7 +129,7 @@ const UserLogout = AsyncHandler(async (req, res) => {
     secure: false,
   };
 
-  res
+  return res
     .status(200)
     .clearCookie("accessToken", options)
     .clearCookie("refreshToken", options)
