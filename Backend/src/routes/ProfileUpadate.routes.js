@@ -1,6 +1,6 @@
 import {Router} from "express"
 import {ChangePassword,DataUpadate,AvatarUpdate,ResumeUpload} from "../controllers/UserProfieUpdate.controller.js"
-import verifyJwt from "../MiddleWare/Auth.middleWare.js";
+import verifyJwt from "../MiddleWare/Auth.middleware.js";
 import { upload } from "../MiddleWare/multer.middleware.js";
 
 const router=Router();

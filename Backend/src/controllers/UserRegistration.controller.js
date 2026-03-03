@@ -33,8 +33,11 @@ const UserRegister = AsyncHandler(async (req, res) => {
     throw new ApiError(409, "User already Existed");
   }
   const AvatarFilePath = req.files?.avatar?.[0]?.path;
-
-  const UploadAvatar = await uploadOnCloudinary(AvatarFilePath);
+  let UploadAvatar;
+  
+  if (AvatarFilePath) {
+    UploadAvatar = await uploadOnCloudinary(AvatarFilePath);
+  }
 
   const user = await User.create({
     fullname,
@@ -42,7 +45,7 @@ const UserRegister = AsyncHandler(async (req, res) => {
     email,
     password,
     role,
-    avatar: UploadAvatar?.url || " ",
+    avatar: UploadAvatar?.url,
   });
 
   const UserCreated = await User.findById(user._id).select("-password");
@@ -60,7 +63,7 @@ const UserRegister = AsyncHandler(async (req, res) => {
   };
 
   return res
-    .status(200)
+    .status(201)
     .json(new ApiRes(200, responseData, "User Registered Successfully"));
 });
 
@@ -136,8 +139,10 @@ const UserLogout = AsyncHandler(async (req, res) => {
     .json(new ApiRes(200, {}, "User LoggedOut !!"));
 });
 
-const getUserProfile=AsyncHandler(async(req,res)=>{
-  return res.status(200).json(new ApiRes(200,req.user,"User fetched successfully!!"))
-})
+const getUserProfile = AsyncHandler(async (req, res) => {
+  return res
+    .status(200)
+    .json(new ApiRes(200, req.user, "User fetched successfully!!"));
+});
 
-export { UserRegister, UserLogin, UserLogout,getUserProfile };
+export { UserRegister, UserLogin, UserLogout, getUserProfile };

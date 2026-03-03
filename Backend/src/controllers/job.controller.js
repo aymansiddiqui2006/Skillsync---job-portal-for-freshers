@@ -6,10 +6,9 @@ import {
   deleteOnCloudinary,
 } from "../utils/cloudinary.utils.js";
 import { Job } from "../Model/job.model.js";
+import { User } from "../Model/user.model.js";
 
 const uploadJob = AsyncHandler(async (req, res) => {
-  console.log("req.files:", req.files);
-  console.log("req.body:", req.body);
   const Userrole = req.user?.role;
 
   if (Userrole !== "recruiter") {
@@ -87,7 +86,128 @@ const uploadJob = AsyncHandler(async (req, res) => {
 
   return res
     .status(201)
-    .json(new ApiRes(200, JobUploadData, "Job Uplloaded !!"));
+    .json(new ApiRes(201, JobUploadData, "Job Uplloaded !!"));
 });
 
-export { uploadJob };
+const updateJob = AsyncHandler(async (req, res) => {
+  const userRole = req.user?.role;
+
+  if (userRole !== "recruiter") {
+    throw new ApiError(403, "Only recruiters can update jobs");
+  }
+
+  const existingJob = await Job.findOne({
+    _id: req.params.jobId,
+    createdBy: req.user?._id,
+  });
+
+  if (!existingJob) {
+    throw new ApiError(403, "Job not found or not authorized");
+  }
+
+  const updateFields = {};
+  const {
+    companyName,
+    title,
+    description,
+    jobType,
+    workMode,
+    experienceLevel,
+  } = req.body;
+
+  if (companyName) updateFields.companyName = companyName;
+  if (title) updateFields.title = title;
+  if (description) updateFields.description = description;
+  if (jobType) updateFields.jobType = jobType;
+  if (workMode) updateFields.workMode = workMode;
+  if (experienceLevel) updateFields.experienceLevel = experienceLevel;
+
+  let { requirement } = req.body;
+  if (requirement) {
+    if (!Array.isArray(requirement)) {
+      requirement = [requirement];
+    }
+
+    requirement = requirement.map((item) => item.trim()).filter(Boolean);
+
+    if (requirement.length === 0) {
+      throw new ApiError(400, "At least one valid requirement is needed");
+    }
+
+    updateFields.requirement = requirement;
+  }
+
+  const logoPath = req.files?.logo?.[0]?.path;
+
+  const DataFilePath = req.files?.DataFile?.[0]?.path;
+
+  if (logoPath) {
+    const logoUploadPath = await uploadOnCloudinary(logoPath);
+
+    if (!logoUploadPath) {
+      throw new ApiError(400, "Logo not uploaded");
+    }
+
+    if (existingJob.logo) {
+      await deleteOnCloudinary(existingJob.logo);
+    }
+
+    updateFields.logo = logoUploadPath.url;
+  }
+
+  if (DataFilePath) {
+    const DataFileUploadPath = await uploadOnCloudinary(DataFilePath);
+
+    if (!DataFileUploadPath) {
+      throw new ApiError(400, "File not uploaded");
+    }
+
+    if (existingJob.DataFile) {
+      await deleteOnCloudinary(existingJob.DataFile);
+    }
+
+    updateFields.DataFile = DataFileUploadPath.url;
+  }
+
+  if (Object.keys(updateFields).length === 0) {
+    throw new ApiError(400, "No data provided to update");
+  }
+
+  const updateData = await Job.findOneAndUpdate(
+    {
+      _id: req.params.jobId,
+      createdBy: req.user?._id,
+    },
+    { $set: updateFields },
+    { new: true, runValidators: true },
+  );
+
+  if (!updateData) {
+    throw new ApiError(403, "Job not found or not authorized");
+  }
+
+  return res.status(200).json(new ApiRes(200, updateData, "Job updated !!"));
+});
+
+const deleteJob = AsyncHandler(async (req, res) => {
+  const userRole = req.user?.role;
+
+  if (userRole !== "recruiter") {
+    throw new ApiError(403, "Only recruiters can delete jobs");
+  }
+
+  const { jobId } = req.params;
+
+  const deletedJob = await Job.findOneAndDelete({
+    _id: jobId,
+    createdBy: req.user._id,
+  });
+
+  if (!deletedJob) {
+    throw new ApiError(404, "Job not found");
+  }
+
+  return res.status(200).json(new ApiRes(200, deletedJob, "job deleted successfully"));
+});
+
+export { uploadJob, updateJob , deleteJob };
