@@ -6,7 +6,6 @@ import {
   deleteOnCloudinary,
 } from "../utils/cloudinary.utils.js";
 import { Job } from "../Model/job.model.js";
-import { User } from "../Model/user.model.js";
 
 const uploadJob = AsyncHandler(async (req, res) => {
   const Userrole = req.user?.role;
@@ -198,16 +197,45 @@ const deleteJob = AsyncHandler(async (req, res) => {
 
   const { jobId } = req.params;
 
-  const deletedJob = await Job.findOneAndDelete({
-    _id: jobId,
-    createdBy: req.user._id,
-  });
+  const deletedJob = await Job.findOneAndUpdate(
+    { _id: jobId, createdBy: req.user._id },
+    {
+      $set: {
+        isActive: false,
+      },
+    },
+    {
+      new: true,
+    },
+  );
 
   if (!deletedJob) {
     throw new ApiError(404, "Job not found");
   }
 
-  return res.status(200).json(new ApiRes(200, deletedJob, "job deleted successfully"));
+  return res
+    .status(200)
+    .json(new ApiRes(200, deletedJob, "job deleted successfully"));
 });
 
-export { uploadJob, updateJob , deleteJob };
+const getAllJob = AsyncHandler(async (req, res) => {
+  const Activejob = await Job.find({isActive:true})
+  return res
+    .status(200)
+    .json(new ApiRes(200, Activejob, "Job succefully fetched !!"));
+});
+
+const getJob=AsyncHandler(async(req,res)=>{
+  const {jobId} = req.params;
+  const job=await Job.findOne({_id:jobId,isActive:true})
+
+  if(!job){
+    throw new ApiError(404, "Job not found");
+  }
+
+  return res
+  .status(200)
+  .json(new ApiRes(200,job,"job fetched succeffully !!"));
+})
+
+export { uploadJob, updateJob, deleteJob, getAllJob ,getJob};

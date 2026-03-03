@@ -1,11 +1,11 @@
 import { Router } from "express";
 import verifyJwt from "../MiddleWare/Auth.middleware.js";
 import { upload } from "../MiddleWare/multer.middleware.js";
-import { uploadJob, updateJob, deleteJob } from "../controllers/job.controller.js";
+import { uploadJob, updateJob, deleteJob,getAllJob,getJob } from "../controllers/job.controller.js";
 
 const router = Router();
 
-router.route("/upload").post(
+router.route("/").post(
   verifyJwt,
   upload.fields([
     {
@@ -20,7 +20,7 @@ router.route("/upload").post(
   uploadJob,
 );
 
-router.route("/update/:jobId").patch(
+router.route("/:jobId").patch(
   verifyJwt,
   upload.fields([
     { name: "logo", maxCount: 1 },
@@ -29,6 +29,10 @@ router.route("/update/:jobId").patch(
   updateJob,
 );
 
-router.route("/delete/:jobId").delete(verifyJwt,deleteJob)
+router.route("/:jobId").delete(verifyJwt,deleteJob)
+
+router.route("/").get(verifyJwt,getAllJob)
+
+router.route("/:jobId").get(verifyJwt,getJob)
 
 export default router;
