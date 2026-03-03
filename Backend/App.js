@@ -1,6 +1,7 @@
 import express from 'express'
 import userRegisterRouter from './src/routes/userRouter.router.js';
 import UpdateProfileRouter from './src/routes/ProfileUpadate.routes.js'
+import jobRouter from "./src/routes/Job.router.js"
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
 
@@ -20,6 +21,9 @@ app.use("/api/v1/user",userRegisterRouter);
 
 //for update  profile
 app.use("/api/v1/user/profile/update",UpdateProfileRouter);
+
+//for update job
+app.use("/api/v1/job",jobRouter)
 
 
 export  default app

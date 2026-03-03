@@ -28,10 +28,6 @@ const jobSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    createdOn: {
-      type: Date,
-      required: true,
-    },
     jobType: {
       type: String,
       enum: ["internship", "full-time", "part-time"],
@@ -51,6 +47,9 @@ const jobSchema = mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    DataFile:{
+      type:String,
+    }
   },
   { timestamps: true },
 );
