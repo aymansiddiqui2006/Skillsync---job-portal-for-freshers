@@ -3,6 +3,12 @@ import jwt from "jsonwebtoken";
 import { User } from "../Model/user.model.js";
 import AsyncHandler from "../utils/AssyncHandler.utils.js";
 
+
+//JWT is the middleware that verifies the user is autho or not 
+//fist: will check the cookie is there or not
+//second: decode the token
+//third : find the user through decoded token 
+//then return the user or founded user 
 const verifyJwt = AsyncHandler(async (req, res, next) => {
   const token =
     req.cookies?.accessToken ||

@@ -15,8 +15,10 @@ app.use(cookieParser())
 
 
 //"use" is the middleware stating that when this is writtent in the link section move to userRouter
+//for user registration
 app.use("/api/v1/user",userRegisterRouter);
 
+//for update  profile
 app.use("/api/v1/user/profile/update",UpdateProfileRouter);
 
 
