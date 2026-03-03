@@ -1,7 +1,7 @@
 import { Router } from "express";
 import verifyJwt from "../MiddleWare/Auth.middleware.js";
 import { upload } from "../MiddleWare/multer.middleware.js";
-import { uploadJob, updateJob, deleteJob,getAllJob,getJob } from "../controllers/job.controller.js";
+import { uploadJob, updateJob, deleteJob,getAllJob,getJob,getJobByRecuiter } from "../controllers/job.controller.js";
 
 const router = Router();
 
@@ -34,5 +34,7 @@ router.route("/:jobId").delete(verifyJwt,deleteJob)
 router.route("/").get(verifyJwt,getAllJob)
 
 router.route("/:jobId").get(verifyJwt,getJob)
+
+router.route("/recruiter/:recruiterId").get(verifyJwt,getJobByRecuiter)
 
 export default router;

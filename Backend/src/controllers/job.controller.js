@@ -219,23 +219,44 @@ const deleteJob = AsyncHandler(async (req, res) => {
 });
 
 const getAllJob = AsyncHandler(async (req, res) => {
-  const Activejob = await Job.find({isActive:true})
+  const Activejob = await Job.find({ isActive: true });
   return res
     .status(200)
     .json(new ApiRes(200, Activejob, "Job succefully fetched !!"));
 });
 
-const getJob=AsyncHandler(async(req,res)=>{
-  const {jobId} = req.params;
-  const job=await Job.findOne({_id:jobId,isActive:true})
+const getJob = AsyncHandler(async (req, res) => {
+  const { jobId } = req.params;
+  const job = await Job.findOne({ _id: jobId, isActive: true });
 
-  if(!job){
+  if (!job) {
     throw new ApiError(404, "Job not found");
   }
 
   return res
-  .status(200)
-  .json(new ApiRes(200,job,"job fetched succeffully !!"));
-})
+    .status(200)
+    .json(new ApiRes(200, job, "job fetched succeffully !!"));
+});
 
-export { uploadJob, updateJob, deleteJob, getAllJob ,getJob};
+const getJobByRecuiter = AsyncHandler(async (req, res) => {
+  const { recruiterId } = req.params;
+
+  const jobs = await Job.find({
+    createdBy: recruiterId,
+    isActive: true,
+  });
+
+  return res
+    .status(200)
+    .json(
+      new ApiRes(
+        200,
+        jobs,
+        jobs.length
+          ? "Jobs fetched successfully"
+          : "No active jobs for this recruiter",
+      ),
+    );
+});
+
+export { uploadJob, updateJob, deleteJob, getAllJob, getJob, getJobByRecuiter };
