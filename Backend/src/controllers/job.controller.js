@@ -219,10 +219,31 @@ const deleteJob = AsyncHandler(async (req, res) => {
 });
 
 const getAllJob = AsyncHandler(async (req, res) => {
-  const Activejob = await Job.find({ isActive: true });
-  return res
-    .status(200)
-    .json(new ApiRes(200, Activejob, "Job succefully fetched !!"));
+  const page = Number(req.query.page) || 1;
+  const limit = Math.min(Number(req.query.limit) || 10, 50); // max 50
+  const skip = (page - 1) * limit;
+
+  const filter = { isActive: true };
+
+  const totalJobs = await Job.countDocuments(filter);
+
+  const jobs = await Job.find(filter)
+    .skip(skip)
+    .limit(limit)
+    .sort({ createdAt: -1 });
+
+  return res.status(200).json(
+    new ApiRes(
+      200,
+      {
+        jobs,
+        totalJobs,
+        totalPages: Math.ceil(totalJobs / limit),
+        currentPage: page,
+      },
+      "Jobs fetched successfully",
+    ),
+  );
 });
 
 const getJob = AsyncHandler(async (req, res) => {
