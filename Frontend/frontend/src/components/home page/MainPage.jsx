@@ -22,7 +22,7 @@ export default function MainPage() {
 
           <li><NavLink to='/Login' className={({ isActive }) => isActive ? "bg-amber-500 text-black px-4 py-1 rounded-xl"
             : "bg-white text-black px-2 py-1 rounded-md text-[1.1rem] hover:bg-amber-400"}>Login</NavLink></li>
-          <li><NavLink to='/Register' className={({ isActive }) => isActive ? "bg-amber-500 text-black px-4 py-1 rounded-xl"
+          <li><NavLink to='/register' className={({ isActive }) => isActive ? "bg-amber-500 text-black px-4 py-1 rounded-xl"
             : "bg-white text-black px-2 py-1 rounded-md text-[1.1rem] hover:bg-amber-400"}>Register</NavLink></li>
         </ul>
         </div>
