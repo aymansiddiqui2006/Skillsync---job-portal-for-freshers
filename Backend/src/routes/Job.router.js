@@ -1,40 +1,49 @@
 import { Router } from "express";
 import verifyJwt from "../MiddleWare/Auth.middleware.js";
 import { upload } from "../MiddleWare/multer.middleware.js";
-import { uploadJob, updateJob, deleteJob,getAllJob,getJob,getJobByRecuiter } from "../controllers/job.controller.js";
+import {
+  uploadJob,
+  updateJob,
+  deleteJob,
+  getAllJob,
+  getJob,
+  getJobByRecuiter
+} from "../controllers/job.controller.js";
 
 const router = Router();
 
-router.route("/").post(
-  verifyJwt,
-  upload.fields([
-    {
-      name: "logo",
-      maxCount: 1,
-    },
-    {
-      name: "DataFile",
-      maxCount: 1,
-    },
-  ]),
-  uploadJob,
-);
-
-router.route("/:jobId").patch(
+// POST JOB
+router.post(
+  "/post",
   verifyJwt,
   upload.fields([
     { name: "logo", maxCount: 1 },
     { name: "DataFile", maxCount: 1 },
   ]),
-  updateJob,
+  uploadJob
 );
 
-router.route("/:jobId").delete(verifyJwt,deleteJob)
+// GET ALL JOBS
+router.get("/", verifyJwt, getAllJob);
 
-router.route("/").get(verifyJwt,getAllJob)
+// GET JOB BY RECRUITER
+router.get("/recruiter/:recruiterId", verifyJwt, getJobByRecuiter);
 
-router.route("/:jobId").get(verifyJwt,getJob)
+// UPDATE JOB
+router.patch(
+  "/:jobId",
+  verifyJwt,
+  upload.fields([
+    { name: "logo", maxCount: 1 },
+    { name: "DataFile", maxCount: 1 },
+  ]),
+  updateJob
+);
 
-router.route("/recruiter/:recruiterId").get(verifyJwt,getJobByRecuiter)
+// DELETE JOB
+router.delete("/:jobId", verifyJwt, deleteJob);
+
+// GET SINGLE JOB
+router.get("/:jobId", verifyJwt, getJob);
 
 export default router;
