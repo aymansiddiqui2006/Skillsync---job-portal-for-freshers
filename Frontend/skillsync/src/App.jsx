@@ -1,6 +1,8 @@
 import {createBrowserRouter , RouterProvider } from 'react-router-dom'
 import { Navigate } from 'react-router-dom';
 
+import { UserProvider } from './component/context/UserContextProvider.jsx';
+
 //Pages
 import Recuiter_Dashboard from '../src/component/Pages/recuiter/Recuiter_Dashboard.jsx'
 import LandingPage from './component/LandingPage.jsx';
@@ -32,7 +34,9 @@ const route = createBrowserRouter([
 function App() {
   
   return (
+    <UserProvider>
     <RouterProvider router={route}/>
+    </UserProvider>
   )
 }
 
