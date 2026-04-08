@@ -1,0 +1,137 @@
+import React from 'react'
+
+function Signin() {
+  return (
+    <></>
+    // <div className="min-h-screen flex justify-center items-center bg-[url('https://images.unsplash.com/photo-1560179707-f14e90ef3623?fm=jpg&q=60&w=3000')] bg-cover bg-center">
+
+    //   <form
+    //     onSubmit={HandleSubmit}
+    //     className="flex flex-col gap-4 bg-[rgba(5,0,43,0.85)] p-10 rounded-lg shadow-2xl text-white w-[420px]"
+    //   >
+
+    //     <h1 className="text-3xl font-bold text-center mb-4">Register</h1>
+
+    //     {/* Avatar */}
+    //     <div className="flex flex-col gap-1">
+    //       <label className="text-sm text-gray-200">
+    //         Avatar <span className="text-gray-400">(optional)</span>
+    //       </label>
+
+    //       {preview && (
+    //         <div className="flex flex-col items-center gap-2">
+    //           <img
+    //             src={preview}
+    //             alt="preview"
+    //             className="w-20 h-20 rounded-full object-cover"
+    //           />
+
+    //           <button
+    //             type="button"
+    //             onClick={() => setavatar(null)}
+    //             className="text-xs text-red-400"
+    //           >
+    //             Remove avatar
+    //           </button>
+    //         </div>
+    //       )}
+
+    //       <input
+    //         ref={fileInputRef}
+    //         type="file"
+    //         accept="image/*"
+    //         onChange={(e) => {
+    //           const file = e.target.files?.[0];
+    //           if (file) setavatar(file);
+    //         }}
+    //         className="w-full p-2 rounded text-black bg-white"
+    //       />
+    //     </div>
+
+    //     {/* Inputs */}
+    //     <input
+    //       type="text"
+    //       placeholder="Enter Fullname"
+    //       required
+    //       value={fullname}
+    //       onChange={(e) => setfullname(e.target.value)}
+    //       className="w-full p-3 rounded text-black outline-none bg-white"
+    //     />
+
+    //     <input
+    //       type="text"
+    //       placeholder="Enter Username"
+    //       required
+    //       value={username}
+    //       onChange={(e) => setusername(e.target.value)}
+    //       className="w-full p-3 rounded text-black outline-none bg-white"
+    //     />
+
+    //     <input
+    //       type="email"
+    //       placeholder="Enter email"
+    //       required
+    //       value={email}
+    //       onChange={(e) => setemail(e.target.value)}
+    //       className="w-full p-3 rounded text-black outline-none bg-white"
+    //     />
+
+    //     <input
+    //       type="password"
+    //       placeholder="Enter password"
+    //       required
+    //       value={password}
+    //       onChange={(e) => setpassword(e.target.value)}
+    //       className="w-full p-3 rounded text-black outline-none bg-white"
+    //     />
+
+    //     {/* Role */}
+    //     <select
+    //       value={role}
+    //       required
+    //       onChange={(e) => setrole(e.target.value)}
+    //       className="w-full p-3 rounded text-black outline-none bg-white"
+    //     >
+    //       <option value="">Select Role</option>
+    //       <option value='fresher'>Fresher</option>
+    //       <option value='recruiter'>Recruiter</option>
+    //     </select>
+
+    //     {/* Button */}
+    //     <button
+    //       disabled={loading || !role}
+    //       className={`w-full p-3 rounded font-bold transition
+    //       ${loading
+    //           ? "bg-gray-400 cursor-not-allowed"
+    //           : "bg-yellow-400 text-black hover:bg-yellow-500 hover:scale-95"
+    //         }`}
+    //     >
+    //       {loading ? "Registering..." : "Submit"}
+    //     </button>
+
+    //     {/* Login */}
+    //     <div className='text-center'>
+    //       <p>
+    //         Already have account?{" "}
+    //         <NavLink
+    //           to='/login'
+    //           className="text-blue-400 hover:underline"
+    //         >
+    //           Login
+    //         </NavLink>
+    //       </p>
+    //     </div>
+
+    //     {/* Error */}
+    //     {error && (
+    //       <p className="text-red-400 text-sm text-center font-medium">
+    //         {error}
+    //       </p>
+    //     )}
+
+    //   </form>
+    // </div>
+  )
+}
+
+export default Signin

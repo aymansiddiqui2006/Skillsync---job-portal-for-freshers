@@ -1,61 +1,16 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import api from "../utils/apiInstance";
-import { APIpaths } from "../utils/apiPath.js";
+import { useState } from "react";
+import  UserContext from "./UserContext.jsx";
 
-const UserContext = createContext();
+export default function UserContextProvider({ children }) {
 
-export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [token, setToken] = useState(localStorage.getItem("token"));
-
-  const isAuthenticated = !!token;
-
-  const fetchUser = async () => {
-    try {
-      const res = await api.get(APIpaths.AUTH.GET_USER);
-      setUser(res.data.data);
-    } catch (error) {
-      console.error("Failed to fetch user");
-      logout();
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const login = (newToken) => {
-    localStorage.setItem("token", newToken);
-    setToken(newToken);
-  };
-
-  const logout = () => {
-    localStorage.removeItem("token");
-    setToken(null);
-    setUser(null);
-    window.location.href = "/landing-page";
-  };
-
-  useEffect(() => {
-    if (token) {
-      fetchUser();
-    } else {
-      setLoading(false);
-    }
-  }, [token]);
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem("user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
 
   return (
-    <UserContext.Provider
-      value={{
-        user,
-        loading,
-        isAuthenticated,
-        login,
-        logout,
-      }}
-    >
+    <UserContext.Provider value={{ user, setUser }}>
       {children}
     </UserContext.Provider>
   );
-};
-
-export const useUser = () => useContext(UserContext);
+}

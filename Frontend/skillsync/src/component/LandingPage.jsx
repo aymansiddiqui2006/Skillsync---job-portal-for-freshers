@@ -21,7 +21,7 @@ function LandingPage() {
                     <li><Link to='contact' smooth={true} duration={500} className='cursor-pointer active:text-amber-500'>Contact</Link></li>
                     <li><Link to='about' smooth={true} duration={500} className='cursor-pointer active:text-amber-500'>Explore</Link></li>
 
-                    <li><NavLink to='/Login' className={({ isActive }) => isActive ? "bg-amber-500 text-black px-4 py-1 rounded-xl"
+                    <li><NavLink to='/login' className={({ isActive }) => isActive ? "bg-amber-500 text-black px-4 py-1 rounded-xl"
                         : "bg-white text-black px-2 py-1 rounded-md text-[1.1rem] hover:bg-amber-400"}>Login</NavLink></li>
                     <li><NavLink to='/register' className={({ isActive }) => isActive ? "bg-amber-500 text-black px-4 py-1 rounded-xl"
                         : "bg-white text-black px-2 py-1 rounded-md text-[1.1rem] hover:bg-amber-400"}>Register</NavLink></li>

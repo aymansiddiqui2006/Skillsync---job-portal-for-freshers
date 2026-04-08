@@ -45,8 +45,6 @@ api.interceptors.response.use(
           // remove token
           localStorage.removeItem("token");
 
-          // redirect to login
-          window.location.href = "/login";
           break;
 
         case 403:
