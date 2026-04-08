@@ -26,10 +26,7 @@ function Login() {
     e.preventDefault();
     setError("");
 
-    if (!email.trim() || !password.trim()) {
-      setError("All fields are required");
-      return;
-    }
+    
 
     setLoading(true);
 

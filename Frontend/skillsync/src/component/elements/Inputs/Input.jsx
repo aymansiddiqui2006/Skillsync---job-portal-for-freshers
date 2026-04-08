@@ -9,7 +9,7 @@ function Input({ label, type, placeholder, onChange, value ,autoComplete }) {
         setShowPassword(!showPassword);
     }
     return (
-        <div className='mt-5'>
+        <div className='mt-3'>
 
             <label htmlFor={label} className='text-lg flex items-start'>
                 {label}

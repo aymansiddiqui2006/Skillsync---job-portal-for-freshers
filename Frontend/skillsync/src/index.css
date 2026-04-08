@@ -7,5 +7,5 @@
 }
 
 .btn{
-    @apply mt-7 w-full text-lg font-medium text-white bg-blue-900 shadow-lg shadow-purple-600/5 p-[10px] rounded-md my-1 hover:bg-blue-950 
+    @apply mt-7 w-full text-lg font-medium text-white bg-yellow-500 shadow-lg shadow-purple-600/5 p-[10px] rounded-md my-1 hover:bg-yellow-600 
 }
