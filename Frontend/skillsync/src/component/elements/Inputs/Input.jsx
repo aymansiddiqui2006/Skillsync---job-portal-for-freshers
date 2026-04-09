@@ -21,7 +21,7 @@ function Input({ label, type, placeholder, onChange, value ,autoComplete }) {
                     onChange={(e) => onChange(e.target.value)}
                     value={value}
                     autoComplete={autoComplete}
-                    className='bg-gray-200 h-10 w-full pr-10 pl-1 rounded border-2 border-gray-400/80 text-black font-medium'
+                    className='bg-white h-10 w-full pr-10 pl-1 rounded border-2 border-gray-200 text-black font-medium'
                 />
                 {
                     type === "password" &&

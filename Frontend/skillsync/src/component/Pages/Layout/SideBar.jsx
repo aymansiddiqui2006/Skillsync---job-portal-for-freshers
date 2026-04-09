@@ -43,11 +43,11 @@ function SideBar() {
                 </div>
 
                 <div className="hover:bg-gray-100 rounded-lg transition px-2 py-1">
-                    <MenuButton icon={<HiCollection />} label={"Jobs"} route={'/recruiter'} activeIcon={<HiFolderOpen />} />
+                    <MenuButton icon={<HiCollection />} label={"Jobs"} route={'/login'} activeIcon={<HiFolderOpen />} />
                 </div>
 
                 <div className="hover:bg-gray-100 rounded-lg transition px-2 py-1">
-                    <MenuButton icon={<HiClipboardList />} label={"My Job"} route={'/recruiter'} />
+                    <MenuButton icon={<HiClipboardList />} label={"My Job"} route={'/login'} />
                 </div>
 
                 {/* Applications Dropdown */}
@@ -86,7 +86,7 @@ function SideBar() {
                 </div>
 
                 <div className="hover:bg-red-100 rounded-lg transition px-2 py-1">
-                    <MenuButton icon={<IoLogOutOutline />} label={"Logout"} route={'/recruiter'} />
+                    <MenuButton icon={<IoLogOutOutline />} label={"Logout"} route={'/login'} />
                 </div>
 
             </div>

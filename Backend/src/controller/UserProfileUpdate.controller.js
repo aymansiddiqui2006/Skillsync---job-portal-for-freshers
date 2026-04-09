@@ -33,7 +33,7 @@ const ChangePassword = AsyncHandler(async (req, res) => {
 });
 
 const DataUpadate = AsyncHandler(async (req, res) => {
-  const { fullname, email, username, skills,recruiterRole,address,contact,companyName } = req.body;
+  const { fullname, email, username, skills,recruiterRole,location,contact,companyName } = req.body;
 
   const updatedUser = await User.findByIdAndUpdate(
     req.user?._id,
@@ -43,7 +43,7 @@ const DataUpadate = AsyncHandler(async (req, res) => {
         email: email,
         username: username,
         recruiterRole:recruiterRole,
-        address:address,
+        location:location,
         contact:contact,
         companyName:companyName,
       },

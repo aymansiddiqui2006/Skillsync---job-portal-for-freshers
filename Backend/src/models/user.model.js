@@ -51,7 +51,7 @@ const userSchema = mongoose.Schema(
     refreshToken: {
       type: String,
     },
-    address:{
+    location:{
       type:String,
     },
     contact:{
