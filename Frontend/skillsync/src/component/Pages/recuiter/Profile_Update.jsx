@@ -1,53 +1,112 @@
 import React from 'react'
-import Model from '../../Model'
-import { useState,useContext } from 'react';
+import toast from 'react-hot-toast'
+import { useState, useContext, useEffect } from 'react';
 
 import UserContext from '../../context/UserContext.jsx'
+import api from '../../../utils/apiInstance.js'
+import { APIpaths } from '../../../utils/apiPath.js'
 
 import Input from '../../elements/Inputs/Input.jsx'
 
-function Profile_Update() {
+// ... imports remain the same
 
-    const {user}=useContext(UserContext);
+function Profile_Update({ onClose }) {
+    const { user, setUser } = useContext(UserContext);
 
-    const[fullname,setFullname]=useState('');
-    const[email,setEmail]=useState('');
-    const[username,setUsername]=useState('');
-    const[skills,setSkills]=useState('');
-    const[recruiterRole,setRecuiterRole]=useState('');
-    const[location,SetLoaction]=useState('');
-    const[contact,setContact]=useState('');
-    const[companyName,SetCompany]=useState('');
+    // 1. Initialize states
+    const [fullname, setFullname] = useState(user?.fullname || '');
+    const [email, setEmail] = useState(user?.email || '');
+    const [username, setUsername] = useState(user?.username || '');
+    const [skills, setSkills] = useState(user?.skills || '');
+    const [recruiterRole, setRecuiterRole] = useState(user?.recruiterRole || '');
+    const [location, setLocation] = useState(user?.location || '');
+    const [contact, setContact] = useState(user?.contact || '');
+    const [companyName, setCompanyName] = useState(user?.companyName || '');
 
-  return (
-    <div>
-        <Input label={"Fullname"} type={'text'} placeholder={user.fullname} value={user.fullname} onChange={setFullname} autoComplete={fullname}/>
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false); // Added loading state
 
-        <Input label={"Username"} type={'text'} placeholder={user.username} value={user.username} onChange={setUsername} autoComplete={username}/>
+    useEffect(() => {
+        if (user) {
+            setFullname(user.fullname || '');
+            setEmail(user.email || '');
+            setUsername(user.username || '');
+            const formattedSkills = Array.isArray(user.skills)
+                ? user.skills.join(', ')
+                : (user.skills || '');
 
-        <Input label={"Email"} type={'email'} placeholder={user.email} value={user.email} onChange={setEmail} autoComplete={email}/>
+            setSkills(formattedSkills);
+            setRecuiterRole(user.recruiterRole || '');
+            setLocation(user.location || '');
+            setContact(user.contact || '');
+            setCompanyName(user.companyName || '');
+        }
+    }, [user]);
 
-        <Input label={"Contact"} type={'number'} placeholder={user.contact || "add phone number"} value={user.contact} onChange={setContact} autoComplete={contact}/>
+    const handleUpdate = async (e) => {
+        e.preventDefault();
+        console.log("Submit triggered!"); // Debug log
+        setError("");
 
-        <Input label={"Location"} type={'type'} placeholder={user.location || "add your loaction"}  value={user.location} onChange={SetLoaction} autoComplete={location}/>
+        // 2. Validation with Toast feedback
+        if (!email || !email.includes('@')) {
+            const msg = "Please enter a valid email address";
+            setError(msg);
+            toast.error(msg);
+            return;
+        }
 
-        <Input label={"Company"} type={'text'} placeholder={user.companyName || "add company name"} value={user.companyName} onChange={SetCompany} autoComplete={companyName}/>
+        const data = { fullname, email, username, skills, recruiterRole, location, contact, companyName };
 
-        <Input label={"Skills"} type={'text'} placeholder={"add skills"} value={skills} onChange={setSkills} autoComplete={skills}/>
+        try {
+            setLoading(true);
+            const res = await api.patch(APIpaths.CHANGE.CHANGE_DATA, data, {
+                withCredentials: true
+            });
 
-        <Input label={"Recuiter role"} type={'text'} placeholder={user.recruiterRole} value={user.recruiterRole} onChange={setRecuiterRole} autoComplete={recruiterRole}/>
+            setUser(res.data.data);
+            toast.success("Profile Updated Successfully!");
+            if (onClose) onClose();
+        } catch (err) {
+            console.error(err);
+            const apiError = err?.response?.data?.message || "Server Error";
+            setError(apiError);
+            toast.error(apiError);
+        } finally {
+            setLoading(false);
+        }
+    }
 
-        <div className='flex justify-end mt-5 gap-4'>
-            <button className='text-blue-800 text-lg font-medium'>
-                Cancle
-            </button>
-            <button className='rounded-2xl bg-blue-800 text-lg text-white px-5 py-2'>
-                Save
-            </button>
-        </div>
-        
-    </div>
-  )
+    return (
+        <form onSubmit={handleUpdate}>
+            {/* Wrap onChange to be explicit */}
+            <Input label="Fullname" type="text" value={fullname} onChange={(val) => setFullname(val)} />
+            <Input label="Username" type="text" value={username} onChange={(val) => setUsername(val)} />
+            <Input label="Email" type="email" value={email} onChange={(val) => setEmail(val)} />
+            <Input label="Contact" type="number" value={contact} onChange={(val) => setContact(val)} />
+
+            {/* Note: changed 'type' to 'text' for location */}
+            <Input label="Location" type="text" value={location} onChange={(val) => setLocation(val)} />
+            <Input label="Company" type="text" value={companyName} onChange={(val) => setCompanyName(val)} />
+            <Input label="Skills" type="text" value={skills} onChange={(val) => setSkills(val)} />
+            <Input label="Recruiter role" type="text" value={recruiterRole} onChange={(val) => setRecuiterRole(val)} />
+
+            {error && <p className="text-red-500 text-sm text-center mt-2">{error}</p>}
+
+            <div className='flex justify-end mt-5 gap-4'>
+                <button type="button" className='text-blue-800 text-lg font-medium' onClick={onClose}>
+                    Cancel
+                </button>
+                <button
+                    className={`rounded-2xl bg-blue-800 text-lg text-white px-5 py-2 ${loading ? 'opacity-50' : ''}`}
+                    type="submit"
+                    disabled={loading}
+                >
+                    {loading ? 'Saving...' : 'Save'}
+                </button>
+            </div>
+        </form>
+    )
 }
 
 export default Profile_Update

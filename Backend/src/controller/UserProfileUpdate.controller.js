@@ -1,7 +1,10 @@
 import ApiError from "../utils/ApiError.utils.js";
 import AsyncHandler from "../utils/AsyncHandler.util.js";
 import ApiRes from "../utils/ApiResponse.utils.js";
-import { uploadOnCloudinary , deleteOnCloudinary} from "../utils/cloudnary.util.js";
+import {
+  uploadOnCloudinary,
+  deleteOnCloudinary,
+} from "../utils/cloudnary.util.js";
 import { User } from "../models/user.model.js";
 
 const ChangePassword = AsyncHandler(async (req, res) => {
@@ -33,7 +36,35 @@ const ChangePassword = AsyncHandler(async (req, res) => {
 });
 
 const DataUpadate = AsyncHandler(async (req, res) => {
-  const { fullname, email, username, skills,recruiterRole,location,contact,companyName } = req.body;
+  const {
+    fullname,
+    email,
+    username,
+    skills,
+    recruiterRole,
+    location,
+    contact,
+    companyName,
+  } = req.body;
+
+  let skillsArray = [];
+
+  if (typeof skills === "string") {
+    // 1. Split by comma
+    // 2. Trim whitespace from each skill
+    // 3. Filter out empty strings
+    const rawSkills = skills
+      .split(",")
+      .map((s) => s.trim())
+      .filter((s) => s !== " ");
+
+    // 4. Use a Set to remove duplicate copies (e.g., ["React", "React"] -> ["React"])
+    // 5. Convert back to an Array
+    skillsArray = [...new Set(rawSkills)];
+  } else if (Array.isArray(skills)) {
+    // If it's already an array, just run the duplicate filter
+    skillsArray = [...new Set(skills)];
+  }
 
   const updatedUser = await User.findByIdAndUpdate(
     req.user?._id,
@@ -42,12 +73,12 @@ const DataUpadate = AsyncHandler(async (req, res) => {
         fullname: fullname,
         email: email,
         username: username,
-        recruiterRole:recruiterRole,
-        location:location,
-        contact:contact,
-        companyName:companyName,
+        recruiterRole: recruiterRole,
+        location: location,
+        contact: contact,
+        companyName: companyName,
+        skills: skillsArray,
       },
-      $push: { skills: skills },
     },
     {
       new: true,
