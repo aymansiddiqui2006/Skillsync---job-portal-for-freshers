@@ -128,7 +128,7 @@ const ResumeUpload = AsyncHandler(async (req, res) => {
   const resumeFilePath = req.file?.path;
 
   if (!resumeFilePath) {
-    throw new ApiError(400, "Avatar Not found");
+    throw new ApiError(400, "Resume Not found");
   }
 
   const user = await User.findById(req.user._id);
@@ -139,7 +139,7 @@ const ResumeUpload = AsyncHandler(async (req, res) => {
 
   const Uploadresume = await uploadOnCloudinary(resumeFilePath);
 
-  if (!Uploadresume.url) {
+  if (!Uploadresume || !Uploadresume.url) {
     throw new ApiError(400, "error while uploading the file");
   }
 
@@ -151,7 +151,7 @@ const ResumeUpload = AsyncHandler(async (req, res) => {
       },
     },
     {
-      new: true,
+      returnDocument: "after",
     },
   ).select("-password -refreshToken");
 

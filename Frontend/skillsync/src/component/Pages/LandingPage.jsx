@@ -1,7 +1,7 @@
-import background from '../component/images/background.png'
-import aboutsecMale from '../component/images/aboutSecMale.png'
-import aboutsecFemale from '../component/images/aboutSecFemale.png'
-import logo from '../component/images/logo.png'
+import background from '../images/background.png'
+import aboutsecMale from '../images/aboutSecMale.png'
+import aboutsecFemale from '../images/aboutSecFemale.png'
+import logo from '../images/logo.png'
 import { NavLink} from 'react-router-dom'
 import { Link } from 'react-scroll'
 

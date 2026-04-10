@@ -9,6 +9,7 @@ import { FaPhoneAlt } from "react-icons/fa";
 import Profile_Update from './Profile_Update.jsx'
 
 import Model from '../../Model';
+import Resume from '../../Profile Element/Resume.jsx';
 
 
 function Recuiter_Profile() {
@@ -24,16 +25,16 @@ function Recuiter_Profile() {
         });
     };
 
-    const[openModel,setOpenModel]=useState(false);
+    const [openModel, setOpenModel] = useState(false);
 
 
 
     return (
-        <>
+        <div>
             <nav className='bg-[#00296d] w-full h-20 px-10 flex items-center justify-between  top-0 z-50 font-serif mb-2 shadow-gray-300 shadow-lg' />
 
-            <div className=" py-8 px-6 flex justify-center">
-                <div className="bg-white shadow-xl rounded-xl p-6 w-full max-w-6xl flex justify-between">
+            <div className="py-8 px-6 flex justify-center flex-col items-center gap-5">
+                <mainInfo className="bg-white shadow-xl rounded-xl p-6 w-full max-w-6xl flex justify-between">
 
                     {/* LEFT PROFILE SECTION */}
                     <div className="flex gap-6">
@@ -48,6 +49,7 @@ function Recuiter_Profile() {
                                 alt="avatar"
                                 className="h-32 w-32 rounded-full border-4 border-gray-200 object-cover"
                             />
+                            <div className='text-blue-700 font-medium cursor-pointer hover:underline' onClick={() => setOpenModel(true)}>Edit</div>
                             <div>{user?.role}</div>
 
                         </div>
@@ -55,7 +57,7 @@ function Recuiter_Profile() {
                         {/* USER INFO */}
                         <div className="space-y-3">
 
-                            <h1 className="text-2xl font-semibold">{user?.username}</h1>
+                            <h1 className="text-2xl font-semibold">{user?.fullname}</h1>
 
                             <p className="text-gray-500 text-sm">
                                 Profile last updated -{" "}
@@ -68,26 +70,35 @@ function Recuiter_Profile() {
 
                                 <div className='flex items-center gap-2'>
                                     <div><FaLocationDot /></div>
-                                    <div onClick={()=>setOpenModel(true)} className='cursor-pointer'> Add location </div>
+                                    <div > {user.location || "Add location"} </div>
                                 </div>
 
                                 <div className='flex items-center gap-2'>
                                     <div><FaPhoneAlt /></div>
-                                    <div onClick={()=>setOpenModel(true)} className='cursor-pointer'>  Add mobile number </div>
+                                    <div>{user.contact || "Add mobile number "}</div>
                                 </div>
 
                                 <div className='flex items-center gap-2'>
                                     <div><IoMdPerson /></div>
-                                    <div onClick={()=>setOpenModel(true)} className='cursor-pointer'
-                                        > Add availability to join </div>
+                                    <div> Add availability to join </div>
                                 </div>
+
+                                <div className='flex items-center gap-2'>
+                                    <div><FaPhoneAlt /></div>
+                                    <div >{user.skills || "Add skills"}</div>
+                                </div>
+
+
+
+
+
 
                                 <Model
                                     isOpen={openModel}
-                                    onClose={()=>setOpenModel(false)}
+                                    onClose={() => setOpenModel(false)}
                                     title={"Basic Details"}
                                 >
-                                    <Profile_Update/>
+                                    <Profile_Update onClose={() => setOpenModel(false)} />
                                 </Model>
 
 
@@ -97,10 +108,35 @@ function Recuiter_Profile() {
                     </div>
 
 
-                </div>
-            </div>
-        </>
+                </mainInfo>
 
+                <div className='flex gap-16 '>
+
+                    {/* left side */}
+                    <quickLink className=" shadow-gray-300 rounded-xl bg-white shadow-xl flex flex-col px-7 py-4 w-60 border-gray-400">
+                        <h4 className='font-medium text-xl items-start'>Quick Edit</h4>
+
+                        <p className='flex justify-between rounded-2xl hover:bg-gray-200 p-2 '>
+                            Resume
+                            <p className='cursor-pointer font-medium text-blue-700'>upload</p>
+                        </p>
+                    </quickLink>
+
+                    {/* right side */}
+                    <main>
+
+                        {/* Resume */}
+                        <Resume/>
+
+                    </main>
+
+                </div>
+
+            </div>
+
+
+
+        </div>
     )
 }
 

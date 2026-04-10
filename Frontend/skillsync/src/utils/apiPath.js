@@ -11,7 +11,7 @@ export const APIpaths={
        CHANGE_PASSWORD:"/api/v1/user/profile/update/password",
        CHANGE_DATA:"/api/v1/user/profile/update/data",
        CHANGE_AVATAR:"/api/v1/user/profile/update/avatar",
-       UPLOAD_DATA:"/api/v1/user/profile/update/resume",
+       UPLOAD_RESUME:"/api/v1/user/profile/update/resume",
     },
     JOB:{
       POST_JOB:"/api/v1/job/post",

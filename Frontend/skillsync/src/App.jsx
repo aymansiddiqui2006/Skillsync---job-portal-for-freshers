@@ -7,7 +7,7 @@ import { Toaster } from 'react-hot-toast'
 
 //Pages
 import Recuiter_Dashboard from '../src/component/Pages/recuiter/Recuiter_Dashboard.jsx'
-import LandingPage from './component/LandingPage.jsx';
+import LandingPage from './component/Pages/LandingPage.jsx';
 import Login from './component/Pages/Auth/Login.jsx'
 import Signin from './component/Pages/Auth/Signin.jsx'
 import RecuiterLayout from './component/Pages/Layout/RecuiterLayout/RecuiterLayout.jsx';
