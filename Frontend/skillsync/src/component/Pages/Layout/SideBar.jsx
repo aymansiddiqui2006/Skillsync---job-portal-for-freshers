@@ -7,16 +7,52 @@ import { ImCross } from "react-icons/im";
 
 import React, { useContext, useState } from 'react'
 import MenuButton from '../../elements/sidebar/MenuButton.jsx'
+import toast from 'react-hot-toast'
+import { useNavigate } from "react-router-dom";
 
 import UserContext from "../../context/UserContext.jsx";
 
+import Model from '../../Model.jsx'
 
+import { APIpaths } from '../../../utils/apiPath.js'
+import api from '../../../utils/apiInstance.js'
 
 
 function SideBar() {
-    const { user } = useContext(UserContext);
+    const navigate = useNavigate()
+
+    const { user, setUser } = useContext(UserContext);
+
+    const [error, setError] = useState('')
 
     const [openApplications, setOpenApplications] = useState(false)
+
+    const [openModel, setOpenModel] = useState(false);
+
+    const handleLogout = async () => {
+        console.log("Logout clicked");
+
+        try {
+
+            await api.post(APIpaths.AUTH.LOGOUT, {}, { withCredentials: true });
+            setUser(null);
+            toast.success("Logged out successfully")
+
+            setOpenModel(false);
+
+            navigate("/login");
+
+        } catch (error) {
+            setError(error?.response?.data?.message ||
+                error?.response?.data?.error ||
+                error?.message ||
+                "Something went wrong")
+
+            toast.error("account failed to logout")
+        }
+    }
+
+
     return (
         <div className="flex flex-col gap-6 w-72 h-screen px-6 py-8 bg-white shadow-lg  shadow-gray-400">
 
@@ -38,58 +74,78 @@ function SideBar() {
             {/* Menu Section */}
             <div className="flex flex-col gap-2 w-full">
 
-                <div className="hover:bg-gray-100 rounded-lg transition px-2 py-1">
-                    <MenuButton icon={<HiTemplate />} label={"Jobs"} route={'/recruiter'} />
-                </div>
+                <MenuButton icon={<HiTemplate />} label={"Jobs"} route={'/recruiter'} />
 
-                <div className="hover:bg-gray-100 rounded-lg transition px-2 py-1">
-                    <MenuButton icon={<HiCollection />} label={"Jobs"} route={'/login'} activeIcon={<HiFolderOpen />} />
-                </div>
 
-                <div className="hover:bg-gray-100 rounded-lg transition px-2 py-1">
-                    <MenuButton icon={<HiClipboardList />} label={"My Job"} route={'/login'} />
-                </div>
+
+                <MenuButton icon={<HiCollection />} label={"Jobs"} route={'/login'} activeIcon={<HiFolderOpen />} />
+
+
+                <MenuButton icon={<HiClipboardList />} label={"My Job"} route={'/login'} />
+
 
                 {/* Applications Dropdown */}
-                <div className="hover:bg-gray-100 rounded-lg transition px-2 py-1">
-                    <button
-                        onClick={() => setOpenApplications(!openApplications)}
-                        className="flex items-center justify-between w-full p-2 rounded"
-                    >
-                        <span className="text-lg text-black">Applications</span>
 
-                        <span className={`text-xl transition-transform duration-300`}>
-                            {openApplications ? <HiOutlineArrowCircleUp /> : <HiOutlineArrowCircleDown />}
-                        </span>
-                    </button>
+                <button
+                    onClick={() => setOpenApplications(!openApplications)}
+                    className="flex items-center justify-between w-full p-2 rounded"
+                >
+                    <span className="text-lg text-black">Applications</span>
 
-                    {openApplications && (
-                        <div className="flex flex-col ml-6 mt-2 border-l border-gray-200 pl-3 space-y-1">
-                            <a className="text-sm text-gray-600 px-3 py-1.5 rounded-md hover:bg-gray-100 hover:text-black transition cursor-pointer flex justify-between">
-                                Received
-                                < span className="text-xl"><RiFolderReceivedFill/></span>
-                            </a>
-                            <a className="text-sm text-gray-600 px-3 py-1.5 rounded-md hover:bg-gray-100 hover:text-black transition cursor-pointer flex justify-between">
-                                Rejected
-                                < span className="text-sm"><ImCross/></span>
-                            </a>
-                            <a className="text-sm text-gray-600 px-3 py-1.5 rounded-md hover:bg-gray-100 hover:text-black transition cursor-pointer flex justify-between">
-                                Approved
-                                < span className="text-xl"><TiTick/></span>
-                            </a>
-                        </div>
-                    )}
-                </div>
+                    <span className={`text-xl transition-transform duration-300`}>
+                        {openApplications ? <HiOutlineArrowCircleUp /> : <HiOutlineArrowCircleDown />}
+                    </span>
+                </button>
 
-                <div className="hover:bg-gray-100 rounded-lg transition px-2 py-1">
-                    <MenuButton icon={<IoMdSettings />} label={"Setting"} route={'/login'} />
-                </div>
+                {openApplications && (
+                    <div className="flex flex-col ml-6 mt-2 border-l border-gray-200 pl-3 space-y-1">
+                        <a className="text-sm text-gray-600 px-3 py-1.5 rounded-md hover:bg-gray-100 hover:text-black transition cursor-pointer flex justify-between">
+                            Received
+                            < span className="text-xl"><RiFolderReceivedFill /></span>
+                        </a>
+                        <a className="text-sm text-gray-600 px-3 py-1.5 rounded-md hover:bg-gray-100 hover:text-black transition cursor-pointer flex justify-between">
+                            Rejected
+                            < span className="text-sm"><ImCross /></span>
+                        </a>
+                        <a className="text-sm text-gray-600 px-3 py-1.5 rounded-md hover:bg-gray-100 hover:text-black transition cursor-pointer flex justify-between">
+                            Approved
+                            < span className="text-xl"><TiTick /></span>
+                        </a>
+                    </div>
+                )}
 
-                <div className="hover:bg-red-100 rounded-lg transition px-2 py-1">
-                    <MenuButton icon={<IoLogOutOutline />} label={"Logout"} route={'/login'} />
-                </div>
+
+                <MenuButton icon={<IoMdSettings />} label={"Setting"} route={'/login'} />
+
+
+
+                <MenuButton icon={<IoLogOutOutline />} label={"Logout"} onClick={() => setOpenModel(true)} />
+
+
+
+                <Model
+                    isOpen={openModel}
+                    onClose={() => setOpenModel(false)}
+                    title={"Confirm Logout"}
+                >
+                    <h1 className="text-black text-lg font-semibold">Are you sure?</h1>
+                    <h3 className="text-gray-700 text-sm">You can later Login</h3>
+                    {
+                        error &&
+                        <p className='mt-2.5 text-red-600 font-medium text-sm'>
+                            {error}
+                        </p>
+                    }
+                    <div className="flex gap-5 justify-end">
+                        <button onClick={() => setOpenModel(false)} className="border-2 border-gray-600 bg-gray-900/60 text-white text-lg font-medium p-1 px-2 rounded-3xl hover:bg-gray-400">Cancel</button>
+                        <button className=" bg-red-700 text-white text-lg font-medium p-1 px-2 rounded-3xl hover:bg-red-900" onClick={handleLogout}>Logout</button>
+                    </div>
+                </Model>
 
             </div>
+
+
+
         </div>
     )
 }

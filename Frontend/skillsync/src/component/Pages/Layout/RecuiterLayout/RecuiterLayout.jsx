@@ -8,10 +8,9 @@ function RecuiterLayout() {
         <div>
             <Navbar />
             <div className='flex'>
-                <SideBar/>
+                <SideBar />
                 <Outlet />
             </div>
-
         </div>
     )
 }

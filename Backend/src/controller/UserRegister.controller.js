@@ -34,7 +34,7 @@ const UserRegister = AsyncHandler(async (req, res) => {
   }
   const AvatarFilePath = req.files?.avatar?.[0]?.path;
   let UploadAvatar;
-  
+
   if (AvatarFilePath) {
     UploadAvatar = await uploadOnCloudinary(AvatarFilePath);
   }
@@ -95,6 +95,8 @@ const UserLogin = AsyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: false,
+    sameSite: "lax",
+    path: "/",
   };
 
   return res
@@ -130,6 +132,7 @@ const UserLogout = AsyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: false,
+    sameSite: "lax",
   };
 
   return res
@@ -139,10 +142,34 @@ const UserLogout = AsyncHandler(async (req, res) => {
     .json(new ApiRes(200, {}, "User LoggedOut !!"));
 });
 
+const UserDeleteAccount = AsyncHandler(async (req, res) => {
+  const userId = req.user._id;
+
+  await User.findByIdAndDelete(userId);
+
+  const options = {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+  };
+
+  return res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json(new ApiRes(200, {}, "account deleted"));
+});
+
 const getUserProfile = AsyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiRes(200, req.user, "User fetched successfully!!"));
 });
 
-export { UserRegister, UserLogin, UserLogout, getUserProfile };
+export {
+  UserRegister,
+  UserLogin,
+  UserLogout,
+  UserDeleteAccount,
+  getUserProfile,
+};

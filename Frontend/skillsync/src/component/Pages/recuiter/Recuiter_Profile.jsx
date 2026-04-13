@@ -6,10 +6,11 @@ import { MdOutlineEmail } from "react-icons/md";
 import { IoMdPerson } from "react-icons/io";
 import { FaPhoneAlt } from "react-icons/fa";
 
-import Profile_Update from './Profile_Update.jsx'
+import Profile_Update from '../../Profile Element/Profile_Update.jsx'
 
 import Model from '../../Model';
 import Resume from '../../Profile Element/Resume.jsx';
+import DeleteUser from '../../Profile Element/DeleteUser.jsx'
 
 
 function Recuiter_Profile() {
@@ -116,17 +117,21 @@ function Recuiter_Profile() {
                     <quickLink className=" shadow-gray-300 rounded-xl bg-white shadow-xl flex flex-col px-7 py-4 w-60 border-gray-400">
                         <h4 className='font-medium text-xl items-start'>Quick Edit</h4>
 
-                        <p className='flex justify-between rounded-2xl hover:bg-gray-200 p-2 '>
+                        <div className='flex justify-between rounded-2xl hover:bg-gray-200 p-2 text-lg '>
                             Resume
                             <p className='cursor-pointer font-medium text-blue-700'>upload</p>
-                        </p>
+                        </div>
                     </quickLink>
 
                     {/* right side */}
-                    <main>
+                    <main className=' flex flex-col gap-10'>
 
                         {/* Resume */}
                         <Resume/>
+
+                        <DeleteUser/>
+
+                        
 
                     </main>
 

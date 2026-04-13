@@ -1,13 +1,17 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-function MenuButton({ label, icon, route, activeIcon }) {
+function MenuButton({ label, icon, route, activeIcon,onClick }) {
     const navigate = useNavigate();
 
     const isActive = location.pathname === route;
 
     const handleRoute = () => {
-        navigate(route);
+        if (onClick) {
+            onClick(); 
+        } else if (route) {
+            navigate(route);
+        }
     }
 
     return (

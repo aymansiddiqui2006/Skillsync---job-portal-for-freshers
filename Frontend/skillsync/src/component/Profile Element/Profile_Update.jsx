@@ -2,11 +2,11 @@ import React from 'react'
 import toast from 'react-hot-toast'
 import { useState, useContext, useEffect } from 'react';
 
-import UserContext from '../../context/UserContext.jsx'
-import api from '../../../utils/apiInstance.js'
-import { APIpaths } from '../../../utils/apiPath.js'
+import UserContext from '../context/UserContext.jsx'
+import api from '../../utils/apiInstance.js'
+import { APIpaths } from '../../utils/apiPath.js'
 
-import Input from '../../elements/Inputs/Input.jsx'
+import Input from '../elements/Inputs/Input.jsx'
 
 // ... imports remain the same
 

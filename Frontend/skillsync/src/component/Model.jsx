@@ -1,9 +1,10 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 
 function Model({ children, isOpen, onClose, title }) {
     if(!isOpen)return null;
-    return (
-        <div className='fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-[calc(100%-1rem)] max-h-full overflow-y-auto overflow-x-hidden bg-black/20'>
+    return ReactDOM.createPortal(
+        <div className='fixed  inset-0 z-50 flex justify-center items-center w-full h-screen max-h-full overflow-y-auto overflow-x-hidden bg-black/20'>
             <div className='relative p-4 w-full max-w-2xl max-h-full'>
                 <div className='relative bg-white rounded-lg shadow-sm'>
                     <div className='flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200'>
@@ -23,7 +24,8 @@ function Model({ children, isOpen, onClose, title }) {
                     </div>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body 
     )
 }
 

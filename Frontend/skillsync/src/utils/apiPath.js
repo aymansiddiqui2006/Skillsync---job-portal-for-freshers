@@ -5,6 +5,7 @@ export const APIpaths={
         SIGNIN:"/api/v1/user/register",
         LOGIN:"/api/v1/user/login",
         LOGOUT:"/api/v1/user/logout",
+        DELETE_ACCOUNT:"/api/v1/user/delete-account",
         GET_USER:"/api/v1/user/profile"
     },
     CHANGE:{

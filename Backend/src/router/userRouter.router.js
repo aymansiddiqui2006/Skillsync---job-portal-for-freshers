@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { UserLogin, UserLogout, UserRegister,getUserProfile } from "../controller/UserRegister.controller.js";
+import { UserLogin, UserLogout, UserRegister,UserDeleteAccount,getUserProfile } from "../controller/UserRegister.controller.js";
 import verifyJwt from "../middleware/Auth.middleware.js";
 import { upload } from "../middleware/multer.middleware.js";
 
@@ -18,6 +18,8 @@ router.route("/register").post(
 router.route("/login").post(UserLogin)
 
 router.route("/logout").post(verifyJwt,UserLogout)
+
+router.delete("/delete-account", verifyJwt, UserDeleteAccount);
 
 router.route("/profile").get(verifyJwt,getUserProfile)
 
