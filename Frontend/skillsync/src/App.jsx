@@ -12,6 +12,8 @@ import Login from './component/Pages/Auth/Login.jsx'
 import Signin from './component/Pages/Auth/Signin.jsx'
 import RecuiterLayout from './component/Pages/Layout/RecuiterLayout/RecuiterLayout.jsx';
 import Recuiter_Profile from './component/Pages/recuiter/Recuiter_Profile.jsx'
+import Jobs from './component/Pages/Jobs.jsx';
+import MyJobs from './component/Pages/recuiter/MyJobs.jsx';
 
 
 const Root = () => {
@@ -39,6 +41,14 @@ const route = createBrowserRouter([
         path: 'recruiter',
         element: <Recuiter_Dashboard />
       },
+      {
+        path:'/jobs',
+        element:<Jobs/>
+      },
+      {
+        path:'/my-job',
+        element:<MyJobs/>
+      }
 
     ]
   },

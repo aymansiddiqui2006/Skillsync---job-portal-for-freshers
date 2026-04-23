@@ -74,14 +74,14 @@ function SideBar() {
             {/* Menu Section */}
             <div className="flex flex-col gap-2 w-full">
 
-                <MenuButton icon={<HiTemplate />} label={"Jobs"} route={'/recruiter'} />
+                <MenuButton icon={<HiTemplate />} label={"Dashboard"} route={'/recruiter'} />
 
 
 
-                <MenuButton icon={<HiCollection />} label={"Jobs"} route={'/login'} activeIcon={<HiFolderOpen />} />
+                <MenuButton icon={<HiCollection />} label={"Jobs"} route={'/jobs'} activeIcon={<HiFolderOpen />} />
 
 
-                <MenuButton icon={<HiClipboardList />} label={"My Job"} route={'/login'} />
+                <MenuButton icon={<HiClipboardList />} label={"My Job"} route={'/my-job'} />
 
 
                 {/* Applications Dropdown */}
@@ -98,7 +98,7 @@ function SideBar() {
                 </button>
 
                 {openApplications && (
-                    <div className="flex flex-col ml-6 mt-2 border-l border-gray-200 pl-3 space-y-1">
+                    <div className="flex flex-col ml-6 mt-2 border-l border-gray-200 pl-3 space-y-1 transition-transform duration-500">
                         <a className="text-sm text-gray-600 px-3 py-1.5 rounded-md hover:bg-gray-100 hover:text-black transition cursor-pointer flex justify-between">
                             Received
                             < span className="text-xl"><RiFolderReceivedFill /></span>

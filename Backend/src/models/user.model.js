@@ -56,7 +56,10 @@ const userSchema = mongoose.Schema(
     },
     contact:{
       type:Number,
-    }
+    },
+    profileSummary:{
+      type:String,
+    },
   },
   { timestamps: true },
 );

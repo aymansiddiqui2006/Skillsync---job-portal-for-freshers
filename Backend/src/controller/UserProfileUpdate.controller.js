@@ -45,6 +45,7 @@ const DataUpadate = AsyncHandler(async (req, res) => {
     location,
     contact,
     companyName,
+    profileSummary,
   } = req.body;
 
   let skillsArray = [];
@@ -78,6 +79,7 @@ const DataUpadate = AsyncHandler(async (req, res) => {
         contact: contact,
         companyName: companyName,
         skills: skillsArray,
+        profileSummary:profileSummary,
       },
     },
     {

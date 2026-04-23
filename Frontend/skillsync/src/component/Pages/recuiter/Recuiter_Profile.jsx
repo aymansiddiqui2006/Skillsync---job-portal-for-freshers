@@ -1,5 +1,7 @@
 import React, { useContext, useState } from 'react'
+import { Link } from 'react-scroll';
 import UserContext from '../../context/UserContext';
+
 import { FaEdit } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineEmail } from "react-icons/md";
@@ -11,6 +13,7 @@ import Profile_Update from '../../Profile Element/Profile_Update.jsx'
 import Model from '../../Model';
 import Resume from '../../Profile Element/Resume.jsx';
 import DeleteUser from '../../Profile Element/DeleteUser.jsx'
+import ProfileSummary from '../../Profile Element/ProfileSummary.jsx'
 
 
 function Recuiter_Profile() {
@@ -35,7 +38,9 @@ function Recuiter_Profile() {
             <nav className='bg-[#00296d] w-full h-20 px-10 flex items-center justify-between  top-0 z-50 font-serif mb-2 shadow-gray-300 shadow-lg' />
 
             <div className="py-8 px-6 flex justify-center flex-col items-center gap-5">
-                <mainInfo className="bg-white shadow-xl rounded-xl p-6 w-full max-w-6xl flex justify-between">
+
+                {/* upper main info */}
+                <div className="bg-white shadow-xl rounded-xl p-6 w-full max-w-6xl flex justify-between">
 
                     {/* LEFT PROFILE SECTION */}
                     <div className="flex gap-6">
@@ -109,29 +114,47 @@ function Recuiter_Profile() {
                     </div>
 
 
-                </mainInfo>
+                </div>
 
                 <div className='flex gap-16 '>
 
                     {/* left side */}
-                    <quickLink className=" shadow-gray-300 rounded-xl bg-white shadow-xl flex flex-col px-7 py-4 w-60 border-gray-400">
-                        <h4 className='font-medium text-xl items-start'>Quick Edit</h4>
+                    <div className=" shadow-gray-300 rounded-xl bg-white shadow-xl flex flex-col px-7 py-4 w-60 border-gray-400">
+                        <h4 className='font-medium text-xl items-start mb-5'>Quick Edit</h4>
 
-                        <div className='flex justify-between rounded-2xl hover:bg-gray-200 p-2 text-lg '>
+                        <div className='flex justify-between rounded-2xl hover:bg-gray-200 p-2 text-base '>
                             Resume
-                            <p className='cursor-pointer font-medium text-blue-700'>upload</p>
+                            <Link to='resume' smooth={true} duration={500} className='cursor-pointer font-medium text-blue-700' >upload</Link>
                         </div>
-                    </quickLink>
+
+                        <div className='flex justify-between rounded-2xl hover:bg-gray-200 p-2 text-base '>
+                            profile Summary
+                            <Link to='ProfileSummary' smooth={true} duration={500} className='cursor-pointer font-medium text-blue-700' >add</Link>
+                        </div>
+
+                        <div className='flex justify-between rounded-2xl hover:bg-gray-200 p-2 text-base '>
+                            Delete Account
+                            <Link to='delete' smooth={true} duration={500} className='cursor-pointer font-medium text-red-600'>delete</Link>
+                        </div>
+                    </div>
 
                     {/* right side */}
                     <main className=' flex flex-col gap-10'>
 
                         {/* Resume */}
-                        <Resume/>
+                        <div id='resume'>
+                            <Resume />
+                        </div>
 
-                        <DeleteUser/>
+                        {/* Profile summary */}
+                        <div id='ProfileSummary'>
+                            <ProfileSummary />
+                        </div>
 
-                        
+                        <div id='delete'>
+                            <DeleteUser />
+                        </div>
+
 
                     </main>
 
