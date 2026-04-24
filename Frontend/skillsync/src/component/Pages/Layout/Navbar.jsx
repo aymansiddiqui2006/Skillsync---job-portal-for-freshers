@@ -8,7 +8,7 @@ import { Bell, Search } from 'lucide-react'
 function Navbar() {
     const {user}=useContext(UserContext)
     return (
-        <nav className='bg-[#00296d] w-full h-20 px-10 flex items-center justify-between  top-0 z-50 font-serif'>
+        <nav className='bg-[#00296d] w-full h-20 px-10 flex items-center justify-between  top-0 z-50 font-serif '>
 
             {/* Logo */}
             <NavLink to='/' className='flex items-center gap-3'>

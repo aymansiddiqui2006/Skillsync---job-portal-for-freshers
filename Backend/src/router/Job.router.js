@@ -41,7 +41,7 @@ router.patch(
 );
 
 // DELETE JOB
-router.delete("/:jobId", verifyJwt, deleteJob);
+router.patch("/:jobId/close", verifyJwt, deleteJob);
 
 // GET SINGLE JOB
 router.get("/:jobId", verifyJwt, getJob);

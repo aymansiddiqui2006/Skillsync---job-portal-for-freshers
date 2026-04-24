@@ -54,7 +54,7 @@ function SideBar() {
 
 
     return (
-        <div className="flex flex-col gap-6 w-72 h-screen px-6 py-8 bg-white shadow-lg  shadow-gray-400">
+        <div className="flex flex-col gap-6 w-72 h-screen px-6 py-8 bg-white shadow-lg  shadow-gray-400 relative">
 
             {/* Avatar Section */}
             <div className="flex flex-col items-center gap-2">

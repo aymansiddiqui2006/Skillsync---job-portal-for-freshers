@@ -17,7 +17,7 @@ export const APIpaths={
     JOB:{
       POST_JOB:"/api/v1/job/post",
       UPDATE_JOB:(jobId)=>`/api/v1/job/${jobId}`,
-      DELETE_JOB:(jobId)=>`/api/v1/job/${jobId}`,
+      DELETE_JOB:(jobId)=>`/api/v1/job/${jobId}/close`,
       GET_ALL_JOB:"/api/v1/job",
       GET_SINGLE_JOB:(jobId)=>`/api/v1/job/${jobId}`,
       GET_JOB_BY_RECRUITER:(recruiterId)=>`/api/v1/job/recruiter/${recruiterId}`

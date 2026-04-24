@@ -22,7 +22,6 @@ const uploadJob = AsyncHandler(async (req, res) => {
     experienceLevel,
   } = req.body;
 
-
   if (
     !companyName ||
     !title ||
@@ -62,7 +61,6 @@ const uploadJob = AsyncHandler(async (req, res) => {
   if (requirement.length === 0) {
     throw new ApiError(400, "At least one valid requirement is needed");
   }
-
 
   const logoPath = req.files?.logo?.[0]?.path;
 
@@ -209,16 +207,11 @@ const deleteJob = AsyncHandler(async (req, res) => {
 
   const { jobId } = req.params;
 
+  // backend — toggle instead of hardcoding false
   const deletedJob = await Job.findOneAndUpdate(
     { _id: jobId, createdBy: req.user._id },
-    {
-      $set: {
-        isActive: false,
-      },
-    },
-    {
-      new: true,
-    },
+    [{ $set: { isActive: { $not: "$isActive" } } }],
+    { new: true, updatePipeline: true },
   );
 
   if (!deletedJob) {
@@ -276,7 +269,6 @@ const getJobByRecuiter = AsyncHandler(async (req, res) => {
 
   const jobs = await Job.find({
     createdBy: recruiterId,
-    isActive: true,
   });
 
   return res
