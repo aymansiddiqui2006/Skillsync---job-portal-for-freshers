@@ -7,7 +7,7 @@ function RecuiterLayout() {
     return (
         <div>
             <Navbar />
-            <div className='flex'>
+            <div className='flex  w-full'>
                 <SideBar />
                 <Outlet />
             </div>

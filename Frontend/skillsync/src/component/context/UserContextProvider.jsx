@@ -8,8 +8,10 @@ export default function UserContextProvider({ children }) {
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
+  const [jobs, setJobs]= useState([])
+
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser ,jobs ,setJobs}}>
       {children}
     </UserContext.Provider>
   );

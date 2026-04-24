@@ -22,7 +22,6 @@ const uploadJob = AsyncHandler(async (req, res) => {
     experienceLevel,
   } = req.body;
 
-  let { requirement } = req.body;
 
   if (
     !companyName ||
@@ -35,22 +34,35 @@ const uploadJob = AsyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required");
   }
 
+  // If single string, convert to array
+  let { requirement } = req.body;
+
   if (!requirement) {
     throw new ApiError(400, "Requirement is required");
   }
 
-  // If single string, convert to array
+  // handle JSON string or normal string
+  if (typeof requirement === "string") {
+    try {
+      requirement = JSON.parse(requirement);
+    } catch {
+      requirement = [requirement];
+    }
+  }
+
+  //  ensure array
   if (!Array.isArray(requirement)) {
     requirement = [requirement];
   }
 
   requirement = requirement
-    .map((item) => item.trim())
+    .map((item) => String(item).trim())
     .filter((item) => item.length > 0);
 
   if (requirement.length === 0) {
     throw new ApiError(400, "At least one valid requirement is needed");
   }
+
 
   const logoPath = req.files?.logo?.[0]?.path;
 
