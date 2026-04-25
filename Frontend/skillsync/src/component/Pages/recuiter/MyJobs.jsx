@@ -223,7 +223,7 @@ function MyJobs() {
                                     <p className='text-[12px] text-gray-500'>{job.companyName}</p>
                                     <p className='text-sm text-gray-500 line-clamp-1'>{job.description}</p>
                                 </div>
-                                <div className='grid grid-cols-3 gap-2 over p-2'>
+                                <div className='grid grid-cols-3 gap-2  p-2'>
                                     <p className='text-[10px] text-blue-700 font-semibold bg-blue-100 p-1 rounded-full border-blue-600 border text-center truncate'>{job.jobType}</p>
                                     <p className='text-[10px] text-orange-800 font-semibold bg-orange-200 border-orange-600 border p-1 rounded-full text-center truncate'>{job.workMode}</p>
                                     <p className='text-[10px] text-green-700font-semibold bg-green-300  border-green-800 border p-1 rounded-full text-center truncate'>{job.experienceLevel}</p>

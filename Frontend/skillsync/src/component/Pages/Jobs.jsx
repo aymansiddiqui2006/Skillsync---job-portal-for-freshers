@@ -1,9 +1,95 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react';
+import userContext from '../context/UserContext.jsx';
+import toast from 'react-hot-toast';
+
+import api from '../../utils/apiInstance';
+import { APIpaths } from '../../utils/apiPath';
 
 function Jobs() {
+  const { AllJobs, setAllJobs } = useContext(userContext);
+
+  useEffect(() => {
+    const fetchAllJobs = async () => {
+      try {
+        const res = await api.get(APIpaths.JOB.GET_ALL_JOB);
+        setAllJobs(res?.data?.data?.jobs || []);
+      } catch (error) {
+        toast.error(error?.response?.data?.message || "Failed to fetch jobs");
+      }
+    };
+
+    fetchAllJobs();
+  }, [setAllJobs]);
+
   return (
-    <div>Jobs</div>
-  )
+    <div className="p-6">
+      <h1 className="text-2xl font-semibold text-gray-800 mb-4">
+        All Active Jobs
+      </h1>
+      {!AllJobs || AllJobs.length === 0 ? (
+        <div className="text-gray-500">No job posted yet!</div>
+      ) : (
+        <div className="flex flex-wrap gap-6">
+          {AllJobs.map((job) => (
+            <div
+              key={job._id}
+              className="flex flex-col w-60 min-h-60 border-2 rounded-lg shadow-sm border-gray-300 hover:shadow-lg hover:scale-105 transition overflow-hidden"
+            >
+              {/* Image */}
+              <div className="h-32 bg-gray-50 flex items-center justify-center">
+                <img
+                  src={job.logo || "/fallback.png"}
+                  alt={job.companyName}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Content */}
+              <div className="p-3 flex flex-col flex-grow">
+                <h2 className="font-semibold text-sm line-clamp-1">
+                  {job.title}
+                </h2>
+
+                <p className="text-xs text-gray-500">
+                  {job.companyName}
+                </p>
+
+                <p className="text-xs text-gray-500 line-clamp-2 mt-1">
+                  {job.description}
+                </p>
+
+                {/* Name + Date */}
+                <div className="flex justify-between items-center text-[11px] text-gray-400 mt-2">
+                  <span>{job.createdBy?.username}</span>
+                  <span>
+                    {new Date(job.createdAt).toLocaleDateString("en-IN", {
+                      day: "numeric",
+                      month: "short",
+                    })}
+                  </span>
+                </div>
+
+                {/* Tags */}
+                <div className="grid grid-cols-3 gap-2 mt-auto pt-3">
+                  <p className="text-[10px] text-blue-700 font-semibold bg-blue-100 px-2 py-1 rounded-full border border-blue-600 text-center truncate">
+                    {job.jobType}
+                  </p>
+
+                  <p className="text-[10px] text-orange-800 font-semibold bg-orange-200 px-2 py-1 rounded-full border border-orange-600 text-center truncate">
+                    {job.workMode}
+                  </p>
+
+                  <p className="text-[10px] text-green-700 font-semibold bg-green-300 px-2 py-1 rounded-full border border-green-800 text-center truncate">
+                    {job.experienceLevel}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
-export default Jobs
+export default Jobs;

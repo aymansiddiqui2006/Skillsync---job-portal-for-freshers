@@ -9,9 +9,10 @@ export default function UserContextProvider({ children }) {
   });
 
   const [jobs, setJobs]= useState([])
+  const [AllJobs, setAllJobs]= useState([])
 
   return (
-    <UserContext.Provider value={{ user, setUser ,jobs ,setJobs}}>
+    <UserContext.Provider value={{ user, setUser ,jobs ,setJobs , AllJobs, setAllJobs}}>
       {children}
     </UserContext.Provider>
   );

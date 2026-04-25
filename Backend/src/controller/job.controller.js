@@ -233,6 +233,7 @@ const getAllJob = AsyncHandler(async (req, res) => {
   const totalJobs = await Job.countDocuments(filter);
 
   const jobs = await Job.find(filter)
+    .populate("createdBy", "username email")
     .skip(skip)
     .limit(limit)
     .sort({ createdAt: -1 });
