@@ -14,6 +14,7 @@ import JobContainer from '../../elements/Page elements/JobContainer.jsx'
 function Recuiter_Dashboard() {
   const { user, jobs, setJobs, AllJobs, setAllJobs } = useContext(UserContext)
 
+
   useEffect(() => {
     const fetchAllJobs = async () => {
 
@@ -70,6 +71,7 @@ function Recuiter_Dashboard() {
                     experienceLevel={job.experienceLevel}
                     workMode={job.workMode}
                     name={job.createdBy?.username}
+                    route={job._id}
                   />
                 ))}
               </div>
@@ -85,7 +87,7 @@ function Recuiter_Dashboard() {
             <p>No jobs available</p>
           ) :
             (
-              <div className="flex gap-4 overflow-x-auto scrollbar-hide py-2 ">
+              <div className="flex gap-4 overflow-x-auto scrollbar-hide py-2" >
                 {previewMyJobs.map((job) => (
                   <JobContainer
                     key={job._id}

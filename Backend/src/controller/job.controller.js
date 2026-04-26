@@ -254,7 +254,10 @@ const getAllJob = AsyncHandler(async (req, res) => {
 
 const getJob = AsyncHandler(async (req, res) => {
   const { jobId } = req.params;
-  const job = await Job.findOne({ _id: jobId, isActive: true });
+  const job = await Job.findOne({ _id: jobId, isActive: true }).populate(
+    "createdBy",
+    "username email location",
+  );
 
   if (!job) {
     throw new ApiError(404, "Job not found");

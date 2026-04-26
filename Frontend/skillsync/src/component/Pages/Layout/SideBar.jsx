@@ -1,9 +1,19 @@
-import { HiOutlineArrowCircleDown, HiOutlineArrowCircleUp, HiFolderOpen, HiCollection, HiClipboardList, HiTemplate } from "react-icons/hi";
-import { IoMdSettings } from "react-icons/io";
-import { IoLogOutOutline } from "react-icons/io5";
-import { RiFolderReceivedFill } from "react-icons/ri";
-import { TiTick } from "react-icons/ti";
+import { MdOutlineSpaceDashboard } from "react-icons/md";
+import { MdSpaceDashboard } from "react-icons/md";
+import { MdLogout } from "react-icons/md";
+import { IoSettingsOutline } from "react-icons/io5";
+import { IoSettingsSharp } from "react-icons/io5";
+import { FaRegFolder } from "react-icons/fa6";
+import { FaFolder } from "react-icons/fa6";
+import { FaArrowAltCircleDown } from "react-icons/fa";
+import { FaArrowAltCircleUp } from "react-icons/fa";
+import { MdOutlineFolderCopy } from "react-icons/md";
+import { MdFolderCopy } from "react-icons/md";
+import { RiFolderReceivedLine } from "react-icons/ri";
 import { ImCross } from "react-icons/im";
+import { TiTick } from "react-icons/ti";
+
+
 
 import React, { useContext, useState } from 'react'
 import MenuButton from '../../elements/sidebar/MenuButton.jsx'
@@ -74,14 +84,14 @@ function SideBar() {
             {/* Menu Section */}
             <div className="flex flex-col gap-2 w-full">
 
-                <MenuButton icon={<HiTemplate />} label={"Dashboard"} route={'/recruiter'} />
+                <MenuButton icon={<MdOutlineSpaceDashboard />} label={"Dashboard"} route={'/recruiter'} activeIcon={<MdSpaceDashboard />}  />
 
 
 
-                <MenuButton icon={<HiCollection />} label={"Jobs"} route={'/jobs'} activeIcon={<HiFolderOpen />} />
+                <MenuButton icon={<FaRegFolder />} label={"Jobs"} route={'/jobs'} activeIcon={<FaFolder />} />
 
 
-                <MenuButton icon={<HiClipboardList />} label={"My Job"} route={'/my-job'} />
+                <MenuButton icon={<MdOutlineFolderCopy/>} label={"My Job"} route={'/my-job'} activeIcon={<MdFolderCopy />} />
 
 
                 {/* Applications Dropdown */}
@@ -93,7 +103,7 @@ function SideBar() {
                     <span className="text-lg text-black">Applications</span>
 
                     <span className={`text-xl transition-transform duration-300`}>
-                        {openApplications ? <HiOutlineArrowCircleUp /> : <HiOutlineArrowCircleDown />}
+                        {openApplications ? <FaArrowAltCircleUp /> : <FaArrowAltCircleDown />}
                     </span>
                 </button>
 
@@ -101,7 +111,7 @@ function SideBar() {
                     <div className="flex flex-col ml-6 mt-2 border-l border-gray-200 pl-3 space-y-1 transition-transform duration-500">
                         <a className="text-sm text-gray-600 px-3 py-1.5 rounded-md hover:bg-gray-100 hover:text-black transition cursor-pointer flex justify-between">
                             Received
-                            < span className="text-xl"><RiFolderReceivedFill /></span>
+                            < span className="text-xl"><RiFolderReceivedLine/></span>
                         </a>
                         <a className="text-sm text-gray-600 px-3 py-1.5 rounded-md hover:bg-gray-100 hover:text-black transition cursor-pointer flex justify-between">
                             Rejected
@@ -115,11 +125,11 @@ function SideBar() {
                 )}
 
 
-                <MenuButton icon={<IoMdSettings />} label={"Setting"} route={'/login'} />
+                <MenuButton icon={<IoSettingsOutline />} label={"Setting"} route={'/login'} activeIcon={<IoSettingsSharp/>}/>
 
 
 
-                <MenuButton icon={<IoLogOutOutline />} label={"Logout"} onClick={() => setOpenModel(true)} />
+                <MenuButton icon={<MdLogout/>} label={"Logout"} onClick={() => setOpenModel(true)} />
 
 
 

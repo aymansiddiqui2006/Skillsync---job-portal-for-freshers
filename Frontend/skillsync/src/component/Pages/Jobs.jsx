@@ -1,12 +1,15 @@
 import React, { useContext, useEffect } from 'react';
 import userContext from '../context/UserContext.jsx';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 import api from '../../utils/apiInstance';
 import { APIpaths } from '../../utils/apiPath';
 
 function Jobs() {
   const { AllJobs, setAllJobs } = useContext(userContext);
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchAllJobs = async () => {
@@ -29,11 +32,12 @@ function Jobs() {
       {!AllJobs || AllJobs.length === 0 ? (
         <div className="text-gray-500">No job posted yet!</div>
       ) : (
-        <div className="flex flex-wrap gap-6">
+        <div className="flex flex-wrap gap-6" >
           {AllJobs.map((job) => (
             <div
               key={job._id}
               className="flex flex-col w-60 min-h-60 border-2 rounded-lg shadow-sm border-gray-300 hover:shadow-lg hover:scale-105 transition overflow-hidden"
+              onClick={() => navigate(`/jobs/${job._id}`)}
             >
               {/* Image */}
               <div className="h-32 bg-gray-50 flex items-center justify-center">

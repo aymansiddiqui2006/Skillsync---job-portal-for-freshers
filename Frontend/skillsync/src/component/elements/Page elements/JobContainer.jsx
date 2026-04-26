@@ -1,6 +1,7 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
-function JobContainer({ logo, title, date, description, jobType, experienceLevel, workMode, name, active }) {
+function JobContainer({ logo, title, date, description, jobType, experienceLevel, workMode, name, active, route }) {
     const formattedDate = date
         ? new Date(date).toLocaleDateString("en-IN", {
             day: "numeric",
@@ -8,8 +9,17 @@ function JobContainer({ logo, title, date, description, jobType, experienceLevel
         })
         : "";
 
+    const navigate=useNavigate()
+
+    const handleRoute =() => {
+        if (!route) return;
+        else{
+            navigate(`/jobs/${route}`)
+        }
+    }
+
     return (
-        <div className='flex flex-col shrink-0  snap-start shadow-sm w-60 min-h-44 p-4 rounded-2xl hover:shadow-gray-400 hover:shadow-lg cursor-pointer mt-3.5 transition '>
+        <div className='flex flex-col shrink-0  snap-start shadow-sm w-60 min-h-44 p-4 rounded-2xl hover:shadow-gray-400 hover:shadow-lg cursor-pointer mt-3.5 transition ' onClick={handleRoute}>
             <div className='flex justify-between'>
                 <img
                     src={logo || "/fallback.png"}
@@ -28,8 +38,8 @@ function JobContainer({ logo, title, date, description, jobType, experienceLevel
                 <div className='flex items-start mt-2'>
                     <p
                         className={`text-[10px] p-1 px-3 rounded-[10px] border text-center ${active
-                                ? "text-green-800 bg-green-300/85 border-green-600"
-                                : "text-gray-700 bg-gray-300/85 border-gray-500"
+                            ? "text-green-800 bg-green-300/85 border-green-600"
+                            : "text-gray-700 bg-gray-300/85 border-gray-500"
                             }`}
                     >
                         {active ? "Active" : "Closed"}

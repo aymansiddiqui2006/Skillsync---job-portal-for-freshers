@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react'
 import toast from 'react-hot-toast'
 import UserContext from '../../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 import api from '../../../utils/apiInstance'
 import { APIpaths } from '../../../utils/apiPath';
@@ -9,10 +10,11 @@ import Model from '../../Model.jsx'
 import Input from '../../elements/Inputs/Input.jsx'
 
 import { FaRegEdit } from "react-icons/fa";
-import { FaEdit } from "react-icons/fa";
 
 function MyJobs() {
     const { user, jobs, setJobs } = useContext(UserContext)
+
+    const navigate=useNavigate()
 
     const [companyName, setCompanyName] = useState('');
     const [title, setTitle] = useState('');
@@ -22,6 +24,7 @@ function MyJobs() {
     const [experienceLevel, setExperienceLevel] = useState('');
     const [requirement, setRequirement] = useState("");
     const [logoFile, setLogoFile] = useState(null);
+    const [DataFile, setDataFile] = useState(null)
 
 
     const [uploadModel, setUploadModel] = useState(false);
@@ -79,7 +82,8 @@ function MyJobs() {
 
             reqArray.forEach(r => formData.append("requirement", r));
 
-            formData.append("logo", logoFile);
+            if (logoFile) formData.append("logo", logoFile);
+            if (DataFile) formData.append("DataFile", DataFile);
 
             // DEBUG
             for (let pair of formData.entries()) {
@@ -106,6 +110,7 @@ function MyJobs() {
             setExperienceLevel("");
             setRequirement("");
             setLogoFile(null);
+            setDataFile(null);
 
             setUploadModel(false);
 
@@ -131,8 +136,10 @@ function MyJobs() {
             formData.append("jobType", jobType);
             formData.append("workMode", workMode);
             formData.append("experienceLevel", experienceLevel);
-            formData.append("requirement", requirement);
-            formData.append("logo", logoFile);
+            const reqArray = requirement.split(",").map(r => r.trim()).filter(Boolean);
+            reqArray.forEach(r => formData.append("requirement", r));
+            if (logoFile) formData.append("logo", logoFile);
+            if (DataFile) formData.append("DataFile", DataFile);
 
 
             const res = await api.patch(APIpaths.JOB.UPDATE_JOB(selectJob._id), formData,
@@ -154,6 +161,7 @@ function MyJobs() {
             setExperienceLevel("");
             setRequirement("");
             setLogoFile(null);
+            setDataFile(null);
 
             setEditJobModel(false);
         } catch (error) {
@@ -176,7 +184,7 @@ function MyJobs() {
                         <div>No job posted yet !</div>
                     ) : (
                         jobs.map((job) => (
-                            <div key={job._id} className='border-2  rounded-lg shadow-md shadow-gray-100 border-gray-300 hover:scale-110 duration-500 ease-in-out delay-75 h-64 w-52 overflow-hidden'>
+                            <div key={job._id} className='border-2  rounded-lg shadow-md shadow-gray-100 border-gray-300 hover:scale-110 duration-500 ease-in-out delay-75 h-64 w-52 overflow-hidden' onClick={() => navigate(`/jobs/${job._id}`)}>
                                 <div className='w-full h-1/2 bg-gray-50 flex items-center justify-center relative' >
                                     <img src={job.logo} alt={job.companyName}
                                         className='w-full h-full object-cover ' />
@@ -207,10 +215,10 @@ function MyJobs() {
                                                     })
 
                                                     setJobs(prev => prev.map(j =>
-                                                         j._id === job._id ? res.data.data : j 
+                                                        j._id === job._id ? res.data.data : j
                                                     ));
                                                     toast.success(res.data.data.isActive ? "Job activated!" : "Job closed!");
-                                                    
+
                                                 } catch (error) {
                                                     toast.error(error?.response?.data?.message || "Failed to update job status")
                                                 }
@@ -226,7 +234,7 @@ function MyJobs() {
                                 <div className='grid grid-cols-3 gap-2  p-2'>
                                     <p className='text-[10px] text-blue-700 font-semibold bg-blue-100 p-1 rounded-full border-blue-600 border text-center truncate'>{job.jobType}</p>
                                     <p className='text-[10px] text-orange-800 font-semibold bg-orange-200 border-orange-600 border p-1 rounded-full text-center truncate'>{job.workMode}</p>
-                                    <p className='text-[10px] text-green-700font-semibold bg-green-300  border-green-800 border p-1 rounded-full text-center truncate'>{job.experienceLevel}</p>
+                                    <p className='text-[10px] text-green-700 font-semibold bg-green-300  border-green-800 border p-1 rounded-full text-center truncate'>{job.experienceLevel}</p>
                                 </div>
                             </div>
                         ))
@@ -399,6 +407,16 @@ function MyJobs() {
                             </label>
 
                         </div>
+                    </div>
+
+                    <div className='mt-2'>
+                        <h1 className='text-lg'>Job Description File <span className='text-sm text-gray-400'>(optional)</span></h1>
+                        <input
+                            type="file"
+                            accept=".pdf,.doc,.docx"
+                            onChange={(e) => setDataFile(e.target.files[0])}
+                            className='mt-1 text-sm'
+                        />
                     </div>
 
                     <div className='flex justify-end mt-5 gap-4'>
@@ -588,6 +606,16 @@ function MyJobs() {
                             </label>
 
                         </div>
+                    </div>
+
+                    <div className='mt-2'>
+                        <h1 className='text-lg'>Job Description File <span className='text-sm text-gray-400'>(optional)</span></h1>
+                        <input
+                            type="file"
+                            accept=".pdf,.doc,.docx"
+                            onChange={(e) => setDataFile(e.target.files[0])}
+                            className='mt-1 text-sm'
+                        />
                     </div>
 
                     <div className='flex justify-end mt-5 gap-4'>
