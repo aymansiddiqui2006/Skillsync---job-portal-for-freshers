@@ -5,12 +5,12 @@ const applicationSchema = mongoose.Schema(
     job: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Job",
-      required: true
+      required: true,
     },
     fresher: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true
+      required: true,
     },
     jobStatus: {
       type: String,
@@ -22,6 +22,20 @@ const applicationSchema = mongoose.Schema(
       communication: String,
       experienceGap: String,
       overallRemark: String,
+    },
+    coverLetter: {
+      type: String,
+    },
+    ResumeAtApplyTime: {
+      type: String,
+    },
+    availability: {
+      type: String,
+      enum: ["immediate", "15-days", "1-month"],
+    },
+    expectedSalary: {
+      type:Number,
+      min:0
     },
     matchedSkill: [
       {

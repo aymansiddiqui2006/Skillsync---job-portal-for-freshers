@@ -14,7 +14,7 @@ function JobContainer({ logo, title, date, description, jobType, experienceLevel
     const handleRoute =() => {
         if (!route) return;
         else{
-            navigate(`/jobs/${route}`)
+            navigate(`/recruiter/jobs/${route}`)
         }
     }
 

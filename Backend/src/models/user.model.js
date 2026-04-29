@@ -51,14 +51,27 @@ const userSchema = mongoose.Schema(
     refreshToken: {
       type: String,
     },
-    location:{
-      type:String,
+    location: {
+      type: String,
     },
-    contact:{
-      type:Number,
+    contact: {
+      type: Number,
     },
-    profileSummary:{
-      type:String,
+    profileSummary: {
+      type: String,
+    },
+    links: {
+      github: String,
+      linkedin: String,
+      portfolio: String,
+    },
+    Education: {
+      type: String,
+      required: true,
+      lowercase: true,
+    },
+    GraduationYear: {
+      type: Number,
     },
   },
   { timestamps: true },

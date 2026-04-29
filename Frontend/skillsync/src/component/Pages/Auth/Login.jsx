@@ -26,7 +26,7 @@ function Login() {
     e.preventDefault();
     setError("");
 
-    
+
 
     setLoading(true);
 
@@ -38,7 +38,6 @@ function Login() {
 
 
     try {
-      setLoading(true);
       setError("");
       const res = await api.post(APIpaths.AUTH.LOGIN, data, {
         withCredentials: true
@@ -50,13 +49,21 @@ function Login() {
 
       const user = res?.data?.data?.user;
       if (!user) throw new Error("Invalid response");
+
+      const token = res?.data?.data?.token;
+
       localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", token);
+      localStorage.setItem("role", user.role);
 
 
       setUser(user)
-
-      if (user.role === "recruiter") {
+      
+      if (user?.role === "recruiter") {
         navigate('/recruiter')
+      }
+      else if (user?.role === "fresher") {
+        navigate('/user')
       }
       else {
         navigate('/')

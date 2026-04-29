@@ -1,9 +1,9 @@
 import React from 'react'
 import { Outlet } from 'react-router'
 import Navbar from '../Navbar.jsx'
-import SideBar from './SideBar.jsx'
+import SideBar from '../RecuiterLayout/SideBar.jsx'
 
-function RecuiterLayout() {
+function SeekerLayout() {
     return (
         <div className='h-screen overflow-hidden'>
             
@@ -26,4 +26,4 @@ function RecuiterLayout() {
     )
 }
 
-export default RecuiterLayout
+export default SeekerLayout

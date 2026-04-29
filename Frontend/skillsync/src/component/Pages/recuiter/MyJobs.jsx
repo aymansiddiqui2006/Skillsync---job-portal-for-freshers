@@ -184,7 +184,7 @@ function MyJobs() {
                         <div>No job posted yet !</div>
                     ) : (
                         jobs.map((job) => (
-                            <div key={job._id} className='border-2  rounded-lg shadow-md shadow-gray-100 border-gray-300 hover:scale-110 duration-500 ease-in-out delay-75 h-64 w-52 overflow-hidden' onClick={() => navigate(`/jobs/${job._id}`)}>
+                            <div key={job._id} className='border-2  rounded-lg shadow-md shadow-gray-100 border-gray-300 hover:scale-110 duration-500 ease-in-out delay-75 h-64 w-52 overflow-hidden' onClick={() => navigate(`/recruiter/jobs/${job._id}`)}>
                                 <div className='w-full h-1/2 bg-gray-50 flex items-center justify-center relative' >
                                     <img src={job.logo} alt={job.companyName}
                                         className='w-full h-full object-cover ' />
@@ -279,7 +279,7 @@ function MyJobs() {
                     />
 
                     <Input
-                        label={'Requirement'}
+                        label={'Requirement (Skills)'}
                         type={'textarea'}
                         placeholder={'React, Node.js, MongoDB'}
                         onChange={setRequirement}

@@ -6,6 +6,7 @@ import api from '../../utils/apiInstance'
 import { APIpaths } from '../../utils/apiPath';
 
 import { FaLocationDot } from "react-icons/fa6";
+import { IoMdPerson } from "react-icons/io";
 
 function JobsInfo() {
     const { id } = useParams();
@@ -38,6 +39,7 @@ function JobsInfo() {
                 <div className='flex flex-col items-start'>
                     <p className='text-white font-semibold text-3xl'>{job.title}</p>
                     <p className='text-white text-xl mt-3'>{job.companyName}</p>
+                    <p className=' text-lg flex gap-0.5 items-center text-gray-200'><IoMdPerson/> {job.createdBy?.username}</p>
 
                     <div className='flex flex-col justify-end mt-1'>
                         <p className='text-gray-300 text-sm flex justify-center items-center gap-0.5'><FaLocationDot />{job.createdBy?.location}</p>
@@ -61,7 +63,7 @@ function JobsInfo() {
             </div>
 
             <div className='p-5'>
-                <h1 className='font-semibold text-lg'>Job Requirements :</h1>
+                <h1 className='font-semibold text-lg'>Job Requirements (Skills):</h1>
                 <ul className='list-disc list-inside flex flex-col gap-1 mt-2'>
                     {job.requirement?.map((item, i) => (
                         <li key={i} className='text-gray-700'>{item}</li>

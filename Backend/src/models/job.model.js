@@ -22,6 +22,7 @@ const jobSchema = mongoose.Schema(
       {
         type: String,
         required: true,
+        trim: true,
       },
     ],
     createdBy: {

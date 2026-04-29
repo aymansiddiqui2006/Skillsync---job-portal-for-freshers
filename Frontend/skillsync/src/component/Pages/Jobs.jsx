@@ -7,7 +7,7 @@ import api from '../../utils/apiInstance';
 import { APIpaths } from '../../utils/apiPath';
 
 function Jobs() {
-  const { AllJobs, setAllJobs } = useContext(userContext);
+  const { user, AllJobs, setAllJobs } = useContext(userContext);
 
   const navigate = useNavigate()
 
@@ -37,7 +37,14 @@ function Jobs() {
             <div
               key={job._id}
               className="flex flex-col w-60 min-h-60 border-2 rounded-lg shadow-sm border-gray-300 hover:shadow-lg hover:scale-105 transition overflow-hidden"
-              onClick={() => navigate(`/jobs/${job._id}`)}
+              onClick={() => {
+                if (user?.role === 'recruiter') {
+                  navigate(`/recruiter/jobs/${job._id}`)
+                }
+                if (user?.role === 'fresher') {
+                  navigate(`/user/jobs/${job._id}`)
+                }
+              }}
             >
               {/* Image */}
               <div className="h-32 bg-gray-50 flex items-center justify-center">

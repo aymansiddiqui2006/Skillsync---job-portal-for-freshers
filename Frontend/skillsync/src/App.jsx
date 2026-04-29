@@ -15,14 +15,44 @@ import Recuiter_Profile from './component/Pages/recuiter/Recuiter_Profile.jsx'
 import Jobs from './component/Pages/Jobs.jsx';
 import MyJobs from './component/Pages/recuiter/MyJobs.jsx';
 import JobsInfo from './component/Pages/JobsInfo.jsx';
+import SeekerLayout from './component/Pages/Layout/SeekerLayout/SeekerLayout.jsx'
+import Seeker_Dashboard from './component/Pages/Seeker/Seeker_Dashboard.jsx';
 
 
 const Root = () => {
   const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
 
-  return token
-    ? <Navigate to="/recruiter" replace />
-    : <Navigate to="/landing-page" replace />;
+  if (!token) {
+    return <Navigate to="/landing-page" replace />
+  }
+
+  if (role === 'recruiter') {
+    return <Navigate to="/recruiter" replace />
+  }
+
+  if (role === 'fresher') {
+    return <Navigate to="/user" replace />
+  }
+
+  return <Navigate to="/landing-page" replace />;
+
+};
+
+
+const ProtectedRoute = ({ children, allowedRole }) => {
+  const role = localStorage.getItem("role");
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (role !== allowedRole) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
 };
 
 const route = createBrowserRouter([
@@ -35,24 +65,28 @@ const route = createBrowserRouter([
     element: <LandingPage />
   },
   {
-    path: '',
-    element: <RecuiterLayout />,
+    path: '/recruiter',
+    element: (
+      <ProtectedRoute allowedRole="recruiter">
+        <RecuiterLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
-        path: 'recruiter',
+        index: true,
         element: <Recuiter_Dashboard />
       },
       {
-        path:'/jobs',
-        element:<Jobs/>
+        path: 'jobs',
+        element: <Jobs />
       },
       {
-        path:'/my-job',
-        element:<MyJobs/>
+        path: 'my-job',
+        element: <MyJobs />
       },
       {
-        path:'/jobs/:id',
-        element:<JobsInfo/>
+        path: 'jobs/:id',
+        element: <JobsInfo />
       }
 
     ]
@@ -69,7 +103,29 @@ const route = createBrowserRouter([
     path: '/profile',
     element: <Recuiter_Profile />
   },
-  
+  {
+    path: '/user',
+    element: (
+      <ProtectedRoute allowedRole="fresher">
+        <SeekerLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      {
+        index: true,
+        element: <Seeker_Dashboard />
+      },
+      {
+        path: 'jobs',
+        element: <Jobs />
+      },
+      {
+        path: 'jobs/:id',
+        element: <JobsInfo />
+      }
+    ]
+  }
+
 ])
 
 function App() {
@@ -78,7 +134,7 @@ function App() {
     <UserContextProvider>
       <Toaster position="top-center" reverseOrder={false} />
       <RouterProvider router={route} />
-      
+
     </UserContextProvider>
   )
 }

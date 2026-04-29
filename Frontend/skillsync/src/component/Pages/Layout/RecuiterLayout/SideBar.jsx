@@ -16,16 +16,16 @@ import { TiTick } from "react-icons/ti";
 
 
 import React, { useContext, useState } from 'react'
-import MenuButton from '../../elements/sidebar/MenuButton.jsx'
+import MenuButton from '../../../elements/sidebar/MenuButton.jsx'
 import toast from 'react-hot-toast'
 import { useNavigate } from "react-router-dom";
 
-import UserContext from "../../context/UserContext.jsx";
+import UserContext from "../../../context/UserContext.jsx";
 
-import Model from '../../Model.jsx'
+import Model from '../../../Model.jsx'
 
-import { APIpaths } from '../../../utils/apiPath.js'
-import api from '../../../utils/apiInstance.js'
+import { APIpaths } from '../../../../utils/apiPath.js'
+import api from '../../../../utils/apiInstance.js'
 
 
 function SideBar() {
@@ -39,6 +39,9 @@ function SideBar() {
 
     const [openModel, setOpenModel] = useState(false);
 
+    const role = user?.role || localStorage.getItem('role');
+    const isRecruiter = role === "recruiter"
+
     const handleLogout = async () => {
         console.log("Logout clicked");
 
@@ -47,6 +50,10 @@ function SideBar() {
             await api.post(APIpaths.AUTH.LOGOUT, {}, { withCredentials: true });
             setUser(null);
             toast.success("Logged out successfully")
+
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            localStorage.removeItem("role");
 
             setOpenModel(false);
 
@@ -84,14 +91,17 @@ function SideBar() {
             {/* Menu Section */}
             <div className="flex flex-col gap-2 w-full">
 
-                <MenuButton icon={<MdOutlineSpaceDashboard />} label={"Dashboard"} route={'/recruiter'} activeIcon={<MdSpaceDashboard />}  />
+                <MenuButton icon={<MdOutlineSpaceDashboard />} label={"Dashboard"} route={isRecruiter ? '/recruiter' : '/user'} activeIcon={<MdSpaceDashboard />} />
 
 
 
-                <MenuButton icon={<FaRegFolder />} label={"Jobs"} route={'/jobs'} activeIcon={<FaFolder />} />
+                <MenuButton icon={<FaRegFolder />} label={"Jobs"} route={isRecruiter ? "recruiter/jobs" : "/user/jobs"} activeIcon={<FaFolder />} />
 
 
-                <MenuButton icon={<MdOutlineFolderCopy/>} label={"My Job"} route={'/my-job'} activeIcon={<MdFolderCopy />} />
+                {
+                    isRecruiter ? (<MenuButton icon={<MdOutlineFolderCopy />} label={"My Job"} route={'/recruiter/my-job'} activeIcon={<MdFolderCopy />} />) : (<MenuButton icon={<MdOutlineFolderCopy />} label={"Recommended"} route={'/user/my-job'} activeIcon={<MdFolderCopy />} />)
+                }
+
 
 
                 {/* Applications Dropdown */}
@@ -109,10 +119,20 @@ function SideBar() {
 
                 {openApplications && (
                     <div className="flex flex-col ml-6 mt-2 border-l border-gray-200 pl-3 space-y-1 transition-transform duration-500">
-                        <a className="text-sm text-gray-600 px-3 py-1.5 rounded-md hover:bg-gray-100 hover:text-black transition cursor-pointer flex justify-between">
-                            Received
-                            < span className="text-xl"><RiFolderReceivedLine/></span>
-                        </a>
+                        {isRecruiter ? (
+                            <a className="text-sm text-gray-600 px-3 py-1.5 rounded-md hover:bg-gray-100 hover:text-black transition cursor-pointer flex justify-between">
+                                Received
+                                < span className="text-xl"><RiFolderReceivedLine /></span>
+                            </a>
+                        ) :
+                            (
+                                <a className="text-sm text-gray-600 px-3 py-1.5 rounded-md hover:bg-gray-100 hover:text-black transition cursor-pointer flex justify-between">
+                                    Applied
+                                    < span className="text-xl"><RiFolderReceivedLine /></span>
+                                </a>
+                            )
+                        }
+
                         <a className="text-sm text-gray-600 px-3 py-1.5 rounded-md hover:bg-gray-100 hover:text-black transition cursor-pointer flex justify-between">
                             Rejected
                             < span className="text-sm"><ImCross /></span>
@@ -125,11 +145,11 @@ function SideBar() {
                 )}
 
 
-                <MenuButton icon={<IoSettingsOutline />} label={"Setting"} route={'/login'} activeIcon={<IoSettingsSharp/>}/>
+                <MenuButton icon={<IoSettingsOutline />} label={"Setting"} route={'/profile'} activeIcon={<IoSettingsSharp />} />
 
 
 
-                <MenuButton icon={<MdLogout/>} label={"Logout"} onClick={() => setOpenModel(true)} />
+                <MenuButton icon={<MdLogout />} label={"Logout"} onClick={() => setOpenModel(true)} />
 
 
 
