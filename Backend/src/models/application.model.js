@@ -26,9 +26,6 @@ const applicationSchema = mongoose.Schema(
     coverLetter: {
       type: String,
     },
-    ResumeAtApplyTime: {
-      type: String,
-    },
     availability: {
       type: String,
       enum: ["immediate", "15-days", "1-month"],
@@ -56,4 +53,4 @@ const applicationSchema = mongoose.Schema(
 
 applicationSchema.index({ job: 1, fresher: 1 }, { unique: true });
 
-export const Application = mongoose.model("application", applicationSchema);
+export const Application = mongoose.model("Application", applicationSchema);
