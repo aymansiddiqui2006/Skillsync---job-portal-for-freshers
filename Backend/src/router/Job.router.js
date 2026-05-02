@@ -44,9 +44,11 @@ router.patch(
 // DELETE JOB
 router.patch("/:jobId/close", verifyJwt, deleteJob);
 
+router.get("/recommended-jobs", verifyJwt, getRecommendedJobs);
+
 // GET SINGLE JOB
 router.get("/:jobId", verifyJwt, getJob);
 
-router.get("/recommended-jobs", verifyJwt, getRecommendedJobs);
+
 
 export default router;

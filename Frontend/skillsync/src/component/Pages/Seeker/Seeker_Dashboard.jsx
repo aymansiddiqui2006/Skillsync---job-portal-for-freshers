@@ -12,7 +12,7 @@ import JobContainer from '../../elements/Page elements/JobContainer.jsx'
 
 function Seeker_Dashboard() {
   const { AllJobs, setAllJobs } = useContext(UserContext)
-  const [rec, setRec]  = useState([]);
+  const [rec, setRec] = useState([]);
 
 
   useEffect(() => {
@@ -35,19 +35,31 @@ function Seeker_Dashboard() {
 
     const FetchreccomendedJob = async () => {
       try {
-        const fetch = await api.get(APIpaths.JOB.GET_RECOMMENDED_JOBS);
-        setRec(fetch?.data?.data?.jobs)
+
+        const res = await api.get(
+          APIpaths.JOB.GET_RECOMMENDED_JOBS
+        );
+
+        setRec(res?.data?.data || []);
+
       } catch (error) {
-        toast.error(error?.response?.data?.message || "Failed to fetch jobs")
+
+        toast.error(
+          error?.response?.data?.message ||
+          "Failed to fetch jobs"
+        );
       }
-    }
-  }, [setRec])
+    };
+
+    FetchreccomendedJob();
+
+  }, []);
 
 
 
   const previewJobs = AllJobs.slice(0, 10);
 
-  const previewRec = rec.slice(0,10);
+  const previewRec = rec.slice(0, 10);
 
   return (
     <div className='px-10 py-12 flex flex-col gap-14'>

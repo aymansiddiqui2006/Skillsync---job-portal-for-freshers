@@ -11,8 +11,10 @@ export default function UserContextProvider({ children }) {
   const [jobs, setJobs]= useState([])
   const [AllJobs, setAllJobs]= useState([])
 
+  const [recommendation, setRecommendation]=useState([])
+
   return (
-    <UserContext.Provider value={{ user, setUser ,jobs ,setJobs , AllJobs, setAllJobs}}>
+    <UserContext.Provider value={{ user, setUser ,jobs ,setJobs , AllJobs, setAllJobs,recommendation, setRecommendation}}>
       {children}
     </UserContext.Provider>
   );
