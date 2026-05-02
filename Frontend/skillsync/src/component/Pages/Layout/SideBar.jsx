@@ -16,16 +16,16 @@ import { TiTick } from "react-icons/ti";
 
 
 import React, { useContext, useState } from 'react'
-import MenuButton from '../../../elements/sidebar/MenuButton.jsx'
+import MenuButton from '../../elements/sidebar/MenuButton.jsx'
 import toast from 'react-hot-toast'
 import { useNavigate } from "react-router-dom";
 
-import UserContext from "../../../context/UserContext.jsx";
+import UserContext from "../../context/UserContext.jsx";
 
-import Model from '../../../Model.jsx'
+import Model from '../../Model.jsx'
 
-import { APIpaths } from '../../../../utils/apiPath.js'
-import api from '../../../../utils/apiInstance.js'
+import { APIpaths } from '../../../utils/apiPath.js'
+import api from '../../../utils/apiInstance.js'
 
 
 function SideBar() {
@@ -95,11 +95,11 @@ function SideBar() {
 
 
 
-                <MenuButton icon={<FaRegFolder />} label={"Jobs"} route={isRecruiter ? "recruiter/jobs" : "/user/jobs"} activeIcon={<FaFolder />} />
+                <MenuButton icon={<FaRegFolder />} label={"Jobs"} route={isRecruiter ? "/recruiter/jobs" : "/user/jobs"} activeIcon={<FaFolder />} />
 
 
                 {
-                    isRecruiter ? (<MenuButton icon={<MdOutlineFolderCopy />} label={"My Job"} route={'/recruiter/my-job'} activeIcon={<MdFolderCopy />} />) : (<MenuButton icon={<MdOutlineFolderCopy />} label={"Recommended"} route={'/user/my-job'} activeIcon={<MdFolderCopy />} />)
+                    isRecruiter ? (<MenuButton icon={<MdOutlineFolderCopy />} label={"My Job"} route={'/recruiter/my-job'} activeIcon={<MdFolderCopy />} />) : (<MenuButton icon={<MdOutlineFolderCopy />} label={"Recommended"} route={'/user/jobs/recommendation'} activeIcon={<MdFolderCopy />} />)
                 }
 
 
@@ -145,7 +145,7 @@ function SideBar() {
                 )}
 
 
-                <MenuButton icon={<IoSettingsOutline />} label={"Setting"} route={'/profile'} activeIcon={<IoSettingsSharp />} />
+                <MenuButton icon={<IoSettingsOutline />} label={"Setting"} route={isRecruiter?'/recruiter/profile':'/user/profile'} activeIcon={<IoSettingsSharp />} />
 
 
 

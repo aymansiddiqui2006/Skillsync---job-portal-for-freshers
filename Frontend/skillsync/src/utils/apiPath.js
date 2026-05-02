@@ -20,8 +20,12 @@ export const APIpaths={
       DELETE_JOB:(jobId)=>`/api/v1/job/${jobId}/close`,
       GET_ALL_JOB:"/api/v1/job",
       GET_SINGLE_JOB:(jobId)=>`/api/v1/job/${jobId}`,
-      GET_JOB_BY_RECRUITER:(recruiterId)=>`/api/v1/job/recruiter/${recruiterId}`
-
+      GET_JOB_BY_RECRUITER:(recruiterId)=>`/api/v1/job/recruiter/${recruiterId}`,
+      GET_RECOMMENDED_JOBS:'/api/v1/job/recommended-jobs'
+    },
+    APPLICATION:{
+        APPLY_JOB:(jobId)=>`/api/v1/application/apply-job/${jobId}`,
+        FEEDBACK_JOB:(ApplicationId)=>`/api/v1/application/feedback/${ApplicationId}`
     }
 }
 

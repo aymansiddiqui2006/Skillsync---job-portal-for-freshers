@@ -288,4 +288,43 @@ const getJobByRecuiter = AsyncHandler(async (req, res) => {
     );
 });
 
-export { uploadJob, updateJob, deleteJob, getAllJob, getJob, getJobByRecuiter };
+const getRecommendedJobs = AsyncHandler(async (req, res) => {
+
+  const user = req.user;
+
+  if (!user) {
+    throw new ApiError(400, "user not found");
+  }
+
+  const skills = user.skills || [];
+
+  const jobs = await Job.find({
+    isActive: true,
+  });
+
+  const recommendedJobs = jobs
+    .map((job) => {
+
+      const matchedSkills = job.requirement.filter(
+        (skill) => skills.includes(skill)
+      );
+
+      return {
+        ...job._doc,
+        matchCount: matchedSkills.length,
+        matchedSkills,
+      };
+    })
+    .filter((job) => job.matchCount > 0)
+    .sort((a, b) => b.matchCount - a.matchCount);
+
+  return res.status(200).json(
+    new ApiRes(
+      200,
+      recommendedJobs,
+      "Recommended jobs fetched"
+    )
+  );
+});
+
+export { uploadJob, updateJob, deleteJob, getAllJob, getJob, getJobByRecuiter ,getRecommendedJobs };

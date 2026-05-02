@@ -1,7 +1,7 @@
 import React from 'react'
 import { Outlet } from 'react-router'
 import Navbar from '../Navbar.jsx'
-import SideBar from './SideBar.jsx'
+import SideBar from '../SideBar.jsx'
 
 function RecuiterLayout() {
     return (

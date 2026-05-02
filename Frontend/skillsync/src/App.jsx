@@ -17,6 +17,8 @@ import MyJobs from './component/Pages/recuiter/MyJobs.jsx';
 import JobsInfo from './component/Pages/JobsInfo.jsx';
 import SeekerLayout from './component/Pages/Layout/SeekerLayout/SeekerLayout.jsx'
 import Seeker_Dashboard from './component/Pages/Seeker/Seeker_Dashboard.jsx';
+import Apply_job from './component/Pages/Fresher/Apply_job.jsx';
+import Recommendation from './component/Pages/Fresher/Recommendation.jsx'
 
 
 const Root = () => {
@@ -45,6 +47,10 @@ const ProtectedRoute = ({ children, allowedRole }) => {
   const token = localStorage.getItem("token");
 
   if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (!role) {
     return <Navigate to="/login" replace />;
   }
 
@@ -85,9 +91,14 @@ const route = createBrowserRouter([
         element: <MyJobs />
       },
       {
+        path: 'profile',
+        element: <Recuiter_Profile />
+      },
+      {
         path: 'jobs/:id',
         element: <JobsInfo />
-      }
+      },
+
 
     ]
   },
@@ -100,7 +111,7 @@ const route = createBrowserRouter([
     element: <Signin />
   },
   {
-    path: '/profile',
+    path: 'profile',
     element: <Recuiter_Profile />
   },
   {
@@ -116,12 +127,24 @@ const route = createBrowserRouter([
         element: <Seeker_Dashboard />
       },
       {
+        path: 'profile',
+        element: <Recuiter_Profile />
+      },
+      {
         path: 'jobs',
         element: <Jobs />
       },
       {
         path: 'jobs/:id',
         element: <JobsInfo />
+      },
+      {
+        path: 'jobs/:id/apply',
+        element: <Apply_job />
+      },
+      {
+        path: 'jobs/recommendation',
+        element: <Recommendation />
       }
     ]
   }

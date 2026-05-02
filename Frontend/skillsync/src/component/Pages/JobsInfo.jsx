@@ -8,9 +8,21 @@ import { APIpaths } from '../../utils/apiPath';
 import { FaLocationDot } from "react-icons/fa6";
 import { IoMdPerson } from "react-icons/io";
 
+import { useNavigate } from 'react-router-dom';
+
+
+
 function JobsInfo() {
     const { id } = useParams();
     const [job, setJob] = useState(null);
+
+    const navigate = useNavigate();
+
+    const role = localStorage.getItem("role");
+
+    const isRecuiter = role === "recruiter";
+
+
 
     useEffect(() => {
         if (!id) return;
@@ -19,7 +31,7 @@ function JobsInfo() {
                 const res = await api.get(APIpaths.JOB.GET_SINGLE_JOB(id))
                 setJob(res.data.data)
             } catch (error) {
-                toast.error(error.response.data.message || 'not able to fetch job')
+                toast.error(error?.response?.data?.message || 'not able to fetch job')
             }
         }
 
@@ -39,7 +51,7 @@ function JobsInfo() {
                 <div className='flex flex-col items-start'>
                     <p className='text-white font-semibold text-3xl'>{job.title}</p>
                     <p className='text-white text-xl mt-3'>{job.companyName}</p>
-                    <p className=' text-lg flex gap-0.5 items-center text-gray-200'><IoMdPerson/> {job.createdBy?.username}</p>
+                    <p className=' text-lg flex gap-0.5 items-center text-gray-200'><IoMdPerson /> {job.createdBy?.username}</p>
 
                     <div className='flex flex-col justify-end mt-1'>
                         <p className='text-gray-300 text-sm flex justify-center items-center gap-0.5'><FaLocationDot />{job.createdBy?.location}</p>
@@ -52,7 +64,12 @@ function JobsInfo() {
                         <p className='text-[10px] text-green-700 font-semibold bg-green-300  border-green-800 border p-1 rounded-full text-center truncate'>{job.experienceLevel}</p>
                     </div>
 
-                    <button className='bg-white shadow-sm rounded-3xl p-1 px-4 font-semibold text-[17px] mt-3.5 cursor-pointer hover:bg-gray-200 '>Apply</button>
+                    {
+                        !isRecuiter && (
+                            <button className='bg-white shadow-sm rounded-3xl p-1 px-4 font-semibold text-[17px] mt-3.5 cursor-pointer hover:bg-gray-200 ' onClick={() => navigate(`/user/jobs/${id}/apply`)}>Apply</button>
+                        )
+                    }
+
                 </div>
                 <img src={job.logo} alt='logo' className='rounded-full w-48 h-48 ' />
             </div>

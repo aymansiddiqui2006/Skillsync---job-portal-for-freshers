@@ -2,6 +2,7 @@ import express from "express";
 import userRegisterRouter from "./src/router/userRouter.router.js";
 import UpdateProfileRouter from "./src/router/ProfileUpdate.router.js";
 import jobRouter from "./src/router/Job.router.js";
+import ApplicationRouter from './src/router/Application.router.js'
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
@@ -33,6 +34,8 @@ app.use("/api/v1/user", userRegisterRouter);
 
 //for update job
 app.use("/api/v1/job", jobRouter);
+
+app.use("/api/v1/application",ApplicationRouter)
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

@@ -54,7 +54,7 @@ function Signin() {
     try {
 
 
-      const res = await api.post(APIpaths.AUTH.SIGNIN,
+      await api.post(APIpaths.AUTH.SIGNIN,
         formData,
         {
           headers: {

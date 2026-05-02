@@ -76,12 +76,12 @@ function Recuiter_Profile() {
 
                                 <div className='flex items-center gap-2'>
                                     <div><FaLocationDot /></div>
-                                    <div > {user.location || "Add location"} </div>
+                                    <div > {user?.location || "Add location"} </div>
                                 </div>
 
                                 <div className='flex items-center gap-2'>
                                     <div><FaPhoneAlt /></div>
-                                    <div>{user.contact || "Add mobile number "}</div>
+                                    <div>{user?.contact || "Add mobile number "}</div>
                                 </div>
 
                                 <div className='flex items-center gap-2'>
@@ -91,7 +91,11 @@ function Recuiter_Profile() {
 
                                 <div className='flex items-center gap-2'>
                                     <div><FaPhoneAlt /></div>
-                                    <div >{user.skills || "Add skills"}</div>
+                                    <div>
+                                        {user?.skills?.length > 0
+                                            ? user.skills.join(", ")
+                                            : "Add skills"}
+                                    </div>
                                 </div>
 
 

@@ -48,46 +48,52 @@ const DataUpadate = AsyncHandler(async (req, res) => {
     profileSummary,
   } = req.body;
 
-  let skillsArray = [];
+  // Dynamic update object
+  const updateFields = {};
 
-  if (typeof skills === "string") {
-    // 1. Split by comma
-    // 2. Trim whitespace from each skill
-    // 3. Filter out empty strings
-    const rawSkills = skills
-      .split(",")
-      .map((s) => s.trim())
-      .filter((s) => s !== " ");
+  if (fullname !== undefined) updateFields.fullname = fullname;
+  if (email !== undefined) updateFields.email = email;
+  if (username !== undefined) updateFields.username = username;
+  if (recruiterRole !== undefined) updateFields.recruiterRole = recruiterRole;
+  if (location !== undefined) updateFields.location = location;
+  if (contact !== undefined) updateFields.contact = contact;
+  if (companyName !== undefined) updateFields.companyName = companyName;
+  if (profileSummary !== undefined)
+    updateFields.profileSummary = profileSummary;
 
-    // 4. Use a Set to remove duplicate copies (e.g., ["React", "React"] -> ["React"])
-    // 5. Convert back to an Array
-    skillsArray = [...new Set(rawSkills)];
-  } else if (Array.isArray(skills)) {
-    // If it's already an array, just run the duplicate filter
-    skillsArray = [...new Set(skills)];
+  // Skills handling
+  if (skills !== undefined) {
+    let skillsArray = [];
+
+    if (typeof skills === "string") {
+      skillsArray = [
+        ...new Set(
+          skills
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean),
+        ),
+      ];
+    } else if (Array.isArray(skills)) {
+      skillsArray = [...new Set(skills)];
+    }
+
+    updateFields.skills = skillsArray;
   }
 
   const updatedUser = await User.findByIdAndUpdate(
     req.user?._id,
     {
-      $set: {
-        fullname: fullname,
-        email: email,
-        username: username,
-        recruiterRole: recruiterRole,
-        location: location,
-        contact: contact,
-        companyName: companyName,
-        skills: skillsArray,
-        profileSummary:profileSummary,
-      },
+      $set: updateFields,
     },
     {
       new: true,
     },
   ).select("-password -refreshToken");
 
-  return res.status(200).json(new ApiRes(200, updatedUser, "data updated !!"));
+  return res
+    .status(200)
+    .json(new ApiRes(200, updatedUser, "Data updated successfully"));
 });
 
 const AvatarUpdate = AsyncHandler(async (req, res) => {

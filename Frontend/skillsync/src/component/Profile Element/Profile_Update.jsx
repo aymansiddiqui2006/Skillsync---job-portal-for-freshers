@@ -56,7 +56,21 @@ function Profile_Update({ onClose }) {
             return;
         }
 
-        const data = { fullname, email, username, skills, recruiterRole, location, contact, companyName };
+        const formattedSkills = skills
+            .split(",")
+            .map((skill) => skill.trim())
+            .filter(Boolean);
+
+        const data = {
+            fullname,
+            email,
+            username,
+            skills: formattedSkills,
+            recruiterRole,
+            location,
+            contact,
+            companyName,
+        };
 
         try {
             setLoading(true);
@@ -64,7 +78,14 @@ function Profile_Update({ onClose }) {
                 withCredentials: true
             });
 
-            setUser(res.data.data);
+            const updatedUser = res.data.data;
+
+            setUser(updatedUser);
+
+            localStorage.setItem(
+                "user",
+                JSON.stringify(updatedUser)
+            );
             toast.success("Profile Updated Successfully!");
             if (onClose) onClose();
         } catch (err) {

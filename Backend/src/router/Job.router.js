@@ -7,7 +7,8 @@ import {
   deleteJob,
   getAllJob,
   getJob,
-  getJobByRecuiter
+  getJobByRecuiter,
+  getRecommendedJobs,
 } from "../controller/job.controller.js";
 
 const router = Router();
@@ -20,7 +21,7 @@ router.post(
     { name: "logo", maxCount: 1 },
     { name: "DataFile", maxCount: 1 },
   ]),
-  uploadJob
+  uploadJob,
 );
 
 // GET ALL JOBS
@@ -37,7 +38,7 @@ router.patch(
     { name: "logo", maxCount: 1 },
     { name: "DataFile", maxCount: 1 },
   ]),
-  updateJob
+  updateJob,
 );
 
 // DELETE JOB
@@ -45,5 +46,7 @@ router.patch("/:jobId/close", verifyJwt, deleteJob);
 
 // GET SINGLE JOB
 router.get("/:jobId", verifyJwt, getJob);
+
+router.get("/recommended-jobs", verifyJwt, getRecommendedJobs);
 
 export default router;

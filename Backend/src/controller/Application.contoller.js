@@ -13,11 +13,9 @@ import { User } from "../models/user.model.js";
 
 const ApplyJob = AsyncHandler(async (req, res) => {
   const { jobId } = req.params;
-
   const fresherId = req.user?._id;
 
   const user = await User.findById(fresherId);
-
   const job = await Job.findById(jobId);
 
   if (!job) {
@@ -25,22 +23,22 @@ const ApplyJob = AsyncHandler(async (req, res) => {
   }
 
   if (user?.role !== "fresher") {
-    throw new ApiError(401, "not valid user to aply for job");
+    throw new ApiError(401, "Not authorized to apply for job");
   }
 
   const {
     expectedSalary,
     availability,
     coverLetter,
-    Education,
-    GraduationYear,
-    links,
+    education,
+    graduationYear,
   } = req.body;
 
   const resumeFile = req?.files?.resume?.[0]?.path;
 
-  if (!expectedSalary || !availability || !coverLetter || !resumeFile) {
-    throw new ApiError(401, "All fields are required");
+  // ✅ FIXED VALIDATION
+  if (!expectedSalary || !availability || !coverLetter) {
+    throw new ApiError(400, "Required fields are missing");
   }
 
   const alreadyApplied = await Application.findOne({
@@ -49,13 +47,17 @@ const ApplyJob = AsyncHandler(async (req, res) => {
   });
 
   if (alreadyApplied) {
-    throw new ApiError(401, "already applied for job");
+    throw new ApiError(409, "Already applied for this job");
   }
 
-  const resumeFileurl = await uploadOnCloudinary(resumeFile);
+  let resumeFileurl = null;
 
-  if (!resumeFileurl) {
-    throw new ApiError(500, "something went wrong while uploading file");
+  if (resumeFile) {
+    resumeFileurl = await uploadOnCloudinary(resumeFile);
+
+    if (!resumeFileurl) {
+      throw new ApiError(500, "Resume upload failed");
+    }
   }
 
   const matchedSkill = user.skills.filter((skill) =>
@@ -66,7 +68,10 @@ const ApplyJob = AsyncHandler(async (req, res) => {
     (skill) => !user.skills.includes(skill),
   );
 
-  const matchScore = (matchedSkill.length / job.requirement.length) * 100;
+  const matchScore =
+    job.requirement.length > 0
+      ? (matchedSkill.length / job.requirement.length) * 100
+      : 0;
 
   const data = await Application.create({
     job: jobId,
@@ -74,12 +79,60 @@ const ApplyJob = AsyncHandler(async (req, res) => {
     expectedSalary,
     availability,
     coverLetter,
+    education,
+    graduationYear,
     resume: resumeFileurl,
-
     matchScore,
     matchedSkill,
     unmatchedSkill,
   });
 
-  return res.status(200).json(new ApiRes(200, data, "job apllied"));
+  return res
+    .status(201)
+    .json(new ApiRes(201, data, "Job applied successfully"));
 });
+
+const FeedBack = AsyncHandler(async (req, res) => {
+  const user = req.user;
+
+  if (user?.role !== "recruiter") {
+    throw new ApiError(401, "not valid user for feedback");
+  }
+
+  const { ApplicationId } = req.params;
+
+  const application = await Application.findById(ApplicationId);
+
+  if (!application) {
+    throw new ApiError(401, "not valid application");
+  }
+
+  const {
+    technicalSkills,
+    communication,
+    experienceGap,
+    overallRemark,
+    jobStatus,
+  } = req.body;
+
+  if (!jobStatus) {
+    throw new ApiError(402, "require job status");
+  }
+
+  application.feedback = {
+    technicalSkills,
+    communication,
+    overallRemark,
+    experienceGap,
+  };
+
+  application.jobStatus = jobStatus;
+
+  await application.save();
+
+  return res.status(200).json(new ApiRes(200, application, "feedback saved"));
+});
+
+
+
+export { ApplyJob, FeedBack };

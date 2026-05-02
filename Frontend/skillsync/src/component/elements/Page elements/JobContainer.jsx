@@ -2,6 +2,9 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 function JobContainer({ logo, title, date, description, jobType, experienceLevel, workMode, name, active, route }) {
+
+    const role = localStorage.getItem('role');
+    const isRecruiter=role==='recruiter'
     const formattedDate = date
         ? new Date(date).toLocaleDateString("en-IN", {
             day: "numeric",
@@ -14,7 +17,8 @@ function JobContainer({ logo, title, date, description, jobType, experienceLevel
     const handleRoute =() => {
         if (!route) return;
         else{
-            navigate(`/recruiter/jobs/${route}`)
+            
+            isRecruiter?navigate(`/recruiter/jobs/${route}`):navigate(`/user/jobs/${route}`)
         }
     }
 

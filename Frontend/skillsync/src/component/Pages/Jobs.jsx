@@ -33,7 +33,7 @@ function Jobs() {
         <div className="text-gray-500">No job posted yet!</div>
       ) : (
         <div className="flex flex-wrap gap-6" >
-          {AllJobs.map((job) => (
+          {AllJobs?.map((job) => (
             <div
               key={job._id}
               className="flex flex-col w-60 min-h-60 border-2 rounded-lg shadow-sm border-gray-300 hover:shadow-lg hover:scale-105 transition overflow-hidden"

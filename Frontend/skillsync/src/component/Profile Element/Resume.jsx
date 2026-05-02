@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import toast from 'react-hot-toast';
 import api from '../../utils/apiInstance';
 import { APIpaths } from '../../utils/apiPath';
@@ -6,12 +6,16 @@ import Model from '../Model.jsx';
 
 import { MdDelete } from "react-icons/md";
 
+import UserContext from "../context/UserContext.jsx"
+
 
 function Resume() {
-
+    const { user, setUser } = useContext(UserContext);
     const [openModel, setOpenModel] = useState(false);
 
-    const [File, setFile] = useState(null);
+    const [File, setFile] = useState(user?.resume || null);
+
+
 
     const handleResumeUpload = async (e) => {
         e.preventDefault();
@@ -28,7 +32,14 @@ function Resume() {
                 withCredentials: true
             })
 
-            setFile(res.data.data.resume)
+            const updatedUser = res.data.data;
+
+            setUser(updatedUser);
+
+            localStorage.setItem(
+                "user",
+                JSON.stringify(updatedUser)
+            );
             toast.success(res?.data?.message || "file uploaded Succesfully")
         } catch (error) {
             toast.error(error?.response?.data?.message);
@@ -37,10 +48,10 @@ function Resume() {
 
     const handleDelete = async () => {
         try {
-            setFile(null); 
+            setFile(null);
             toast.success("Resume removed")
         } catch (error) {
-            toast.error("Failed to delete resume",error);
+            toast.error("Failed to delete resume", error);
         }
     }
 
@@ -48,13 +59,18 @@ function Resume() {
     return (
         <div className='bg-white shadow-gray-300 shadow-xl rounded-xl py-3 px-12'>
             <h1 className='font-medium text-xl items-start'>Resume</h1>
-            <div className=' border-dotted border-2 border-gray-500 rounded-lg py-28 px-48 mt-8'>
+            <div className=' border-dotted border-2 border-gray-500 rounded-lg py-28 px-48 mt-8 overflow-hidden'>
                 <div className='text-lg flex gap-2'>
                     Already Have Resume ?
                     <p className='cursor-pointer font-semibold text-blue-700 text-lg' onClick={() => setOpenModel(true)}>Upload Resume</p>
                 </div>
                 <p className='text-gray-600 font-normal text-sm'>Supported Formats: doc, docx, rtf, pdf, upto 2 MB</p>
-                
+
+                {
+                    File &&
+                    <div>{user.resume}</div>
+                }
+
             </div>
 
             <Model

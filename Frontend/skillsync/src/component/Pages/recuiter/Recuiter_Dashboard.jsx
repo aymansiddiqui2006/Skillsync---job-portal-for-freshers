@@ -1,5 +1,4 @@
 import React, {  useContext, useEffect } from 'react'
-import SideBar from '../Layout/RecuiterLayout/SideBar.jsx'
 
 import InfoContainer from '../../elements/Page elements/InfoContainer.jsx'
 

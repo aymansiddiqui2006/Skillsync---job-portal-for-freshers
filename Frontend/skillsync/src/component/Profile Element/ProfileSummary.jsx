@@ -34,11 +34,17 @@ function ProfileSummary() {
             const res = await api.patch(APIpaths.CHANGE.CHANGE_DATA, data, {
                 withCredentials: true
             })
-            setUser(res.data.data)
+            const updatedUser = res.data.data;
+
+            setUser(updatedUser);
+
+            localStorage.setItem(
+                "user",
+                JSON.stringify(updatedUser)
+            );
             toast.success("Profile Updated Successfully!")
             setError(false);
             setModel(false);
-            setProfileSummary("");
         } catch (error) {
             setError(error?.response?.data?.message || "Server Error")
 
@@ -57,10 +63,11 @@ function ProfileSummary() {
             <h1 className='text-gray-500 text-sm font-semibold mt-3'>Highlight your key career achievements to help employers know your potential</h1>
 
             {
-                profileSummary &&
-                <div className='bg-gray-200/45 rounded-sm p-3.5 mt-5 border-gray-200'>
-                    {user.profileSummary}
-                </div>
+                profileSummary && (
+                    <div className='bg-gray-200/45 rounded-sm p-3.5 mt-5 border-gray-200'>
+                        {profileSummary}
+                    </div>
+                )
             }
 
 
